@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 // @route   GET /api/users/ 
 // @desc    test users route -- TESTING ONLY 
 // @access  public 
-// router.get('/', (req, res) => res.json({msg: 'testing users route'}));
+// router.get('/', (req, res) => res.json({msg: 'Testing users route'}));
 
 // @route   POST /api/users/
 // @desc    register users
@@ -27,14 +27,15 @@ router.post('/',
         if (!errors.isEmpty()) {
             return res.status(400).json({errors: errors.array()});
         }
-        let {name, email, password} = req.body; 
+        const {name, email} = req.body; 
+        let {password} = req.body; 
 
         try {
             // check if user already exists 
             let user = await User.findOne({email});
             if (user) {
                 return res.status(400).json({errors: [
-                    {msg: 'user with provided email already exists'}
+                    {msg: 'User with provided email already exists'}
                 ]}); 
             }
 
@@ -76,7 +77,7 @@ router.post('/',
         } catch (error) {
             console.error(error.message);
             res.status(500).json({errors: [
-                {msg: 'server error - unable to register user'}
+                {msg: 'Server error - unable to register user'}
             ]}); 
         }
     }
