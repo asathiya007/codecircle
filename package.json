@@ -4,7 +4,9 @@
   "description": "A social media platform through which coders can connect/communicate and share their careers, projects, etc. ",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server",
+    "start": "node server"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,12 @@
   "bugs": {
     "url": "https://github.com/asathiya007/codecircle/issues"
   },
-  "homepage": "https://github.com/asathiya007/codecircle#readme"
+  "homepage": "https://github.com/asathiya007/codecircle#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
 }
