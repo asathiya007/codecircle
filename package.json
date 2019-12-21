@@ -1,0 +1,32 @@
+{
+  "name": "codecircle",
+  "version": "1.0.0",
+  "description": "A social media platform through which coders can connect/communicate and share their careers, projects, etc. ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asathiya007/codecircle.git"
+  },
+  "keywords": [
+    "coder",
+    "developer",
+    "social",
+    "media",
+    "platform",
+    "social",
+    "media",
+    "social",
+    "media",
+    "platform",
+    "connect"
+  ],
+  "author": "Akshay Sathiya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asathiya007/codecircle/issues"
+  },
+  "homepage": "https://github.com/asathiya007/codecircle#readme"
+}
