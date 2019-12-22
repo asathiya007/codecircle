@@ -29,6 +29,25 @@
   height: 100%;
 }
 
-.buttons {
-  justify-content: space-evenly; 
+.h-center {
+  display: flex; 
+  justify-content: center; 
 }
+
+.v-center {
+  display: flex;
+  flex-flow: column nowrap; 
+  justify-content: center;
+}
+
+.top-space {
+  margin-top: 100px; 
+}
+
+.alerts {
+  z-index: 1; 
+  position: absolute;
+  margin-left: 30%; 
+  margin-right: 30%; 
+}
+

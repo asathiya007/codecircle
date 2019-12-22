@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 const Landing = () => {
     return (
-        <section className="landing">
+        <div className="landing">
             <div className="dark-overlay">
                 <div className="landing-inner">
                     <h1 className="f1 fw6">CodeCircle</h1>
@@ -12,16 +12,16 @@ const Landing = () => {
                         share your projects, and keep us posted on your career!
                     </p>
                     <div>
-                        <Button variant="outline-primary" size="lg" className="mr3">
+                        <Button variant="primary" size="lg" className="mr3 grow" href="/register">
                             Register
                         </Button>
-                        <Button variant="outline-primary" size="lg" className="ml3">
+                        <Button variant="primary" size="lg" className="ml3 grow" href="/login">
                             Log In
                         </Button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     )
 }
 

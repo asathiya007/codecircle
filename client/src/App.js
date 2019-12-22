@@ -1,19 +1,32 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import Landing from "./components/layout/Landing/Landing";
-import Navigation from "./components/layout/Navigation/Navigation";
+import Landing from './components/layout/Landing/Landing';
+import Navigation from './components/layout/Navigation/Navigation';
+import Register from './components/auth/Register/Register';
+import Alerts from './components/layout/Alerts/Alerts';
+import {Provider} from 'react-redux';
+import store from './store';
+import {loadUser} from './actions/auth';
 
 function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
-    <Router>
-      <Fragment>
-        <Route component={Navigation}/>
-        <Switch>
-          <Route exact path="/" component={Landing}/>
-        </Switch>
-      </Fragment>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <Route component={Navigation} />
+          <Route component={Alerts} />
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Register} />
+          </Switch>
+        </Fragment>
+      </Router>
+    </Provider>
   );
 }
 

@@ -6,6 +6,7 @@ const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
+const tokenauth = require('../../middleware/tokenauth');
 
 // @route   GET /api/users/ 
 // @desc    test users route -- TESTING ONLY 
@@ -82,5 +83,28 @@ router.post('/',
         }
     }
 ); 
+
+// @route   GET /api/users/me
+// @desc    get current user data 
+// @access  public
+router.get('/me', tokenauth, async (req, res) => {
+    try {
+        // check if user exists 
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(400).json({errors: [
+                {msg: 'Current user data not found'}
+            ]}); 
+        }
+
+        // return user data to client
+        res.json(user);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({errors: [
+            {msg: 'Server error - unable to get current user data'}
+        ]}); 
+    }
+});
 
 module.exports = router; 
