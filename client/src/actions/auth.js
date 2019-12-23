@@ -25,6 +25,7 @@ export const loadUser = () => async dispatch => {
             }); 
         }
     } catch (error) {
+        // clear user data in store (auth)
         dispatch({
             type: AUTH_ERROR
         }); 
@@ -57,7 +58,7 @@ export const register = ({name, email, password}) => async dispatch => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
 
-        // clear user data in store 
+        // clear user data in store (auth)
         dispatch({
             type: REGISTER_FAIL
         }); 
@@ -90,7 +91,7 @@ export const login = ({ email, password }) => async dispatch => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
 
-        // clear user data in store 
+        // clear user data in store (auth)
         dispatch({
             type: LOGIN_FAIL
         });
@@ -98,6 +99,7 @@ export const login = ({ email, password }) => async dispatch => {
 }
 
 export const logout = () => dispatch => {
+    // clear user data in store (auth)
     dispatch({
         type: LOGOUT
     }); 
