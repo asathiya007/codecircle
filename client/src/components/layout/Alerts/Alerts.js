@@ -7,6 +7,7 @@ const Alerts = ({alerts}) => {
     return (
         <div className="pt3 alerts w-100">
             {
+                // for each alert, render an Alert component 
                 alerts !== null && alerts.length > 0 && alerts.map(
                     alert => (
                         <Alert key={alert.id} variant={alert.alertType} className="w-40">

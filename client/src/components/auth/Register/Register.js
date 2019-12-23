@@ -23,6 +23,8 @@ const Register = ({isAuthenticated, setAlert, register}) => {
 
     const onSubmit = async e => {
         e.preventDefault(); 
+
+        // check if passwords match, if so, register user
         if (password !== password1) {
             setAlert('Passwords do not match', 'danger');
         } else {
@@ -72,7 +74,8 @@ const Register = ({isAuthenticated, setAlert, register}) => {
 
 Register.propTypes = {
     setAlert: PropTypes.func.isRequired, 
-    isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool,
+    register: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
