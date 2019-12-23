@@ -92,7 +92,7 @@ router.get('/me', tokenauth, async (req, res) => {
         // check if user exists 
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(400).json({errors: [
+            return res.status(404).json({errors: [
                 {msg: 'Current user data not found'}
             ]}); 
         }
@@ -117,8 +117,8 @@ router.delete('/', tokenauth, async (req, res) => {
 
         // check if user does not exist
         if (!user) {
-            res.status(400).json({errors: [
-                {msg: 'User account to be deleted does not exist'}
+            res.status(404).json({errors: [
+                {msg: 'User account to be deleted not found'}
             ]}); 
         }
 
