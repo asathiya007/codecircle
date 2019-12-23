@@ -29,10 +29,10 @@ const Login = ({ isAuthenticated, login }) => {
 
     return (
         <div className="h-center top-space">
-            <div className="w-50">
-                <div className="f1 fw7 text-primary">
+            <div className="w-60">
+                <p className="f1 fw7 text-primary mv0">
                     Log In
-                </div>
+                </p>
                 <Form onSubmit={onSubmit}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>

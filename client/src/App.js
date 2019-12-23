@@ -6,6 +6,7 @@ import Navigation from './components/layout/Navigation/Navigation';
 import Register from './components/auth/Register/Register';
 import Login from './components/auth/Login/Login';
 import Alerts from './components/layout/Alerts/Alerts';
+import Dashboard from './components/dashboard/Dashboard/Dashboard';
 import {Provider} from 'react-redux';
 import store from './store';
 import {loadUser} from './actions/auth';
@@ -23,8 +24,9 @@ function App() {
           <Route component={Alerts} />
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/dashboard" component={Dashboard} />
           </Switch>
         </Fragment>
       </Router>

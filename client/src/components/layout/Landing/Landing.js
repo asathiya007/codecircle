@@ -18,10 +18,10 @@ const Landing = ({isAuthenticated}) => {
                         share your projects, and keep us posted on your career!
                     </p>
                     <div>
-                        <Button variant="primary" size="lg" className="mr3 grow" href="/register">
+                        <Button variant="primary" size="lg" className="mh3 grow" href="/register">
                             Register
                         </Button>
-                        <Button variant="primary" size="lg" className="ml3 grow" href="/login">
+                        <Button variant="primary" size="lg" className="mh3 grow" href="/login">
                             Log In
                         </Button>
                     </div>

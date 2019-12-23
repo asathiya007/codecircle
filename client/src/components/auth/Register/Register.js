@@ -38,34 +38,34 @@ const Register = ({isAuthenticated, setAlert, register}) => {
 
     return (
         <div className="h-center top-space">
-            <div className="w-50">
-                <div className="f1 fw7 text-primary">
+            <div className="w-60">
+                <p className="f1 fw7 text-primary mv0">
                     Register
-                </div>
+            </p>
                 <Form onSubmit={onSubmit}>
                     <Form.Group controlId="formBasicName">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control name="name" type="text" placeholder="What's your name?" defaultValue={name} onChange={onChange}/>
+                        <Form.Control name="name" type="text" placeholder="What's your name?" defaultValue={name} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control name="email" type="email" placeholder="What's your email?" defaultValue={email} onChange={onChange}/>
+                        <Form.Control name="email" type="email" placeholder="What's your email?" defaultValue={email} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control name="password" type="password" placeholder="Pick a password you'll remember!" defaultValue={password} onChange={onChange}/>
+                        <Form.Control name="password" type="password" placeholder="Pick a password you'll remember!" defaultValue={password} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword1">
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control name="password1" type="password" placeholder="Confirm your password" defaultValue={password1} onChange={onChange}/>
+                        <Form.Control name="password1" type="password" placeholder="Confirm your password" defaultValue={password1} onChange={onChange} />
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
                         Submit
-                    </Button>
+                </Button>
                 </Form>
             </div>
         </div>
