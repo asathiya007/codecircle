@@ -86,7 +86,7 @@ router.post('/',
 
 // @route   GET /api/users/me
 // @desc    get current user data 
-// @access  public
+// @access  private
 router.get('/me', tokenauth, async (req, res) => {
     try {
         // check if user exists 
@@ -106,5 +106,31 @@ router.get('/me', tokenauth, async (req, res) => {
         ]}); 
     }
 });
+
+// @route   DELETE /api/users/
+// @desc    delete current user
+// @access  private
+router.delete('/', tokenauth, async (req, res) => {
+    try {
+        // find current user
+        const user = await User.findById(req.user.id);
+
+        // check if user does not exist
+        if (!user) {
+            res.status(400).json({errors: [
+                {msg: 'User account to be deleted does not exist'}
+            ]}); 
+        }
+
+        // remove the user 
+        await user.remove();
+        res.json({msg: 'User account deleted'}); 
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({errors: [
+            {msg: 'Server error - unable to delete user account'}
+        ]}); 
+    }
+}); 
 
 module.exports = router; 
