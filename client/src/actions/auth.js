@@ -6,7 +6,8 @@ import {
     LOGIN_FAIL,
     USER_LOADED, 
     AUTH_ERROR, 
-    LOGOUT
+    LOGOUT,
+    CLEAR_PROFILE
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import {setAlert} from './alert';
@@ -102,5 +103,10 @@ export const logout = () => dispatch => {
     // clear user data in store (auth)
     dispatch({
         type: LOGOUT
-    }); 
+    });
+
+    // clear user profile data in store (profile)
+    dispatch({
+        type: CLEAR_PROFILE
+    })
 }

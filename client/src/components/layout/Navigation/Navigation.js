@@ -10,7 +10,10 @@ const Navigation = ({auth: {isAuthenticated, loading}, logout}) => {
     const showLinks = () => {
         if (!loading && isAuthenticated) {
             return <Fragment>
-                <Nav.Link href="/" className="text-white" onClick={logout}>
+                <Nav.Link href="/" className="text-white" onClick={e => {
+                    e.preventDefault(); 
+                    logout(); 
+                }}>
                     <span className="blue-hover">
                         Log Out
                 </span>
