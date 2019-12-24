@@ -2,6 +2,7 @@ const express = require('express');
 const {check, validationResult} = require('express-validator');
 const router = express.Router(); 
 const User = require('../../models/User');
+const Profile = require('../../models/Profile');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const config = require('config');
@@ -112,18 +113,15 @@ router.get('/me', tokenauth, async (req, res) => {
 // @access  private
 router.delete('/', tokenauth, async (req, res) => {
     try {
-        // find current user
-        const user = await User.findById(req.user.id);
+        // delete the user's posts 
+        // TODO
 
-        // check if user does not exist
-        if (!user) {
-            res.status(404).json({errors: [
-                {msg: 'User account to be deleted not found'}
-            ]}); 
-        }
+        // delete the user's profile 
+        await Profile.findOneAndRemove({user: req.user.id});
 
-        // remove the user 
-        await user.remove();
+        // delete the user 
+        await User.findByIdAndRemove(req.user.id);
+
         res.json({msg: 'User account deleted'}); 
     } catch (error) {
         console.error(error.message);

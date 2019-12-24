@@ -7,7 +7,8 @@ import {
     USER_LOADED, 
     AUTH_ERROR, 
     LOGOUT,
-    CLEAR_PROFILE
+    CLEAR_PROFILE,
+    DELETE_ACCOUNT
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import {setAlert} from './alert';
@@ -108,5 +109,29 @@ export const logout = () => dispatch => {
     // clear user profile data in store (profile)
     dispatch({
         type: CLEAR_PROFILE
-    })
+    }); 
+}
+
+export const deleteUser = () => async dispatch => {
+    try {
+        if (window.confirm('Are you sure? This action cannot be undone!')) {
+            await axios.delete('/api/users');
+
+            // clear user data in store (auth, profile, post)
+            dispatch({
+                type: DELETE_ACCOUNT
+            });
+        }
+    } catch (error) {
+        // create an alert for each error 
+        const errors = error.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        // clear user data in store (auth, profile, post)
+        dispatch({
+            type: DELETE_ACCOUNT
+        });
+    }
 }

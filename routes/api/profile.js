@@ -5,7 +5,7 @@ const {check, validationResult} = require('express-validator');
 
 const router = express.Router(); 
 
-// @route   GET api/profile/me
+// @route   GET /api/profile/me
 // @desc    get current user's profile 
 // @access  private 
 router.get('/me', tokenauth, async (req, res) => {
@@ -31,7 +31,7 @@ router.get('/me', tokenauth, async (req, res) => {
     }
 });
 
-// @route   POST api/profile/
+// @route   POST /api/profile/
 // @desc    create or update current user profile 
 // @access  private 
 router.post('/', 
