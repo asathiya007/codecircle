@@ -35,7 +35,7 @@ const Login = ({ isAuthenticated, login }) => {
                 </p>
                 <Form onSubmit={onSubmit}>
                     <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
+                        <Form.Label>Email Address</Form.Label>
                         <Form.Control name="email" type="email" placeholder="What's your email?" defaultValue={email} onChange={onChange} />
                     </Form.Group>
 

@@ -4,6 +4,17 @@ const ProfileSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'user'
+    },
+    name: {
+        type: String, 
+        required: true
+    }, 
+    email: {
+        type: String, 
+        required: true 
+    }, 
+    phone: {
+        type: String
     }, 
     company: {
         type: String
@@ -14,8 +25,8 @@ const ProfileSchema = new mongoose.Schema({
     location: {
         type: String
     },
-    status: {
-        type: String, 
+    occupation: {
+        type: String,
         required: true
     }, 
     skills: {

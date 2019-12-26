@@ -55,7 +55,7 @@ const Dashboard = ({auth: {isAuthenticated, user}, profile: {profile, loading}, 
                             <i className="fas fa-user-circle"></i>
                             {' '}Create Profile
                         </Button>
-                            <Button variant="danger" className="ml3" onClick={deleteUser}>
+                        <Button variant="danger" className="ml3" onClick={deleteUser}>
                             <i className="fas fa-user-slash"></i>
                             {' '}Delete Account
                         </Button>

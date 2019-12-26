@@ -37,8 +37,10 @@ router.get('/me', tokenauth, async (req, res) => {
 router.post('/', 
     [
         tokenauth, 
-        check('status', 'Please enter your status').not().isEmpty(),
-        check('skills', 'Please enter your skills').not().isEmpty()
+        check('occupation', 'Please enter your occupation').not().isEmpty(),
+        check('skills', 'Please enter your skills').not().isEmpty(),
+        check('email', 'Please provide user\'s email address').isEmail(),
+        check('email', 'Please provide user\'s name').not().isEmpty()
     ], 
     async (req, res) => {
         try {
@@ -51,8 +53,11 @@ router.post('/',
                 company,
                 website,
                 location,
+                name, 
+                email, 
+                phone, 
                 bio,
-                status,
+                occupation,
                 githubusername,
                 skills,
                 youtube,
@@ -68,8 +73,11 @@ router.post('/',
             if (company || company === '') profileFields.company = company; 
             if (website || website === '') profileFields.website = website; 
             if (location || location === '') profileFields.location = location;
+            if (email) profileFields.email = email; 
+            if (name) profileFields.name = name;
+            if (phone || phone === '') profileFields.phone = phone; 
             if (bio || bio === '') profileFields.bio = bio; 
-            if (status) profileFields.status = status; 
+            if (occupation) profileFields.occupation = occupation; 
             if (githubusername || githubusername === '') profileFields.githubusername = githubusername; 
             if (skills) {
                 profileFields.skills = skills.split(',').map(skill => skill.trim()); 

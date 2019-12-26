@@ -7,6 +7,7 @@ import Register from './components/auth/Register/Register';
 import Login from './components/auth/Login/Login';
 import Alerts from './components/layout/Alerts/Alerts';
 import Dashboard from './components/dashboard/Dashboard/Dashboard';
+import CreateProfile from './components/profile-forms/CreateProfile/CreateProfile';
 import {Provider} from 'react-redux';
 import store from './store';
 import {loadUser} from './actions/auth';
@@ -27,6 +28,7 @@ function App() {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/create-profile" component={CreateProfile} />
           </Switch>
         </Fragment>
       </Router>
