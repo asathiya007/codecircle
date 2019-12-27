@@ -103,7 +103,6 @@ router.post('/',
                     {$set: profileFields},
                     {new: true}
                 ); 
-
                 return res.json(profile);
             }
 
@@ -119,5 +118,86 @@ router.post('/',
         }
     }
 ); 
+
+// @route   PUT /api/profile/education
+// @desc    add profile education 
+// @access  private 
+router.put('/education', 
+[
+    tokenauth, 
+    [
+        check('institution', 'Please enter the name of the institution').not().isEmpty(),
+        check('degree', 'Please enter the degree program').not().isEmpty(), 
+        check('fieldOfStudy', 'Please enter the field of study').not().isEmpty(), 
+        check('from', 'Please enter the education start date').not().isEmpty()
+    ]
+], async (req, res) => {
+    try {
+        // validate and extract input 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
+        const {
+            institution,
+            degree,
+            fieldOfStudy,
+            from,
+            to,
+            current,
+            description
+        } = req.body;
+        const newEducation = {
+            institution,
+            degree,
+            fieldOfStudy,
+            from,
+            to,
+            current,
+            description
+        }; 
+
+        // fetch profile, if one exists 
+        const profile = await Profile.findOne({user: req.user.id});
+        if (!profile) {
+            res.status(404).json({errors: [
+                {msg: 'Profile for current user not found'}
+            ]}); 
+        }
+
+        // add education to profile 
+        profile.education.unshift(newEducation);
+        await profile.save(); 
+        res.json(profile);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json('Server error - unable to add education to current user profile');
+    }
+}); 
+
+// @route   DELETE /api/profile/education/:id
+// @desc    delete profile education 
+// @access  private 
+router.delete('/education/:id', tokenauth, async (req, res) => {
+    try {
+        // fetch profile, if one exists 
+        const profile = await Profile.findOne({ user: req.user.id });
+        if (!profile) {
+            res.status(404).json({
+                errors: [
+                    { msg: 'Profile for current user not found' }
+                ]
+            });
+        }
+
+        // remove education from profile  
+        profile.education = profile.education.filter(edu => edu._id.toString() !== req.params.id); 
+        await profile.save();
+        res.json(profile);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json('Server error - unable to delete education from current user profile');
+    }
+}); 
 
 module.exports = router; 

@@ -59,3 +59,8 @@ export const buildProfile = (formData, history, edit = false) => async dispatch 
         }); 
     }
 }
+
+// add profile education 
+export const addEducation = (formData, history) => async dispatch => {
+    
+}

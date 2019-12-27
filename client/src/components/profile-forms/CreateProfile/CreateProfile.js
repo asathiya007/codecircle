@@ -45,6 +45,7 @@ const CreateProfile = ({auth, buildProfile, history}) => {
         instagram
     } = formData; 
 
+    // only accept numbers as input for the user's phone number
     const fitPhoneNum = phoneNum => {
         let newPhoneNum = '';
         for (let i = 0; i < phoneNum.length; i++) {
@@ -90,7 +91,7 @@ const CreateProfile = ({auth, buildProfile, history}) => {
                     </Form.Group>
 
                     <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
+                        <Form.Label>Email Address</Form.Label>
                         <Form.Control type="email" name="email" defaultValue={auth.user.email} readOnly/>
                     </Form.Group>
 
@@ -110,7 +111,7 @@ const CreateProfile = ({auth, buildProfile, history}) => {
                     </Form.Group>
 
                     <Form.Group controlId="formBasicOccupation">
-                        <Form.Label>Occupation</Form.Label>
+                        <Form.Label>Occupation (Required)</Form.Label>
                         <Form.Control type="text" name="occupation" placeholder="What's your occupation (intern, junior developer, senior developer, etc.)?" defaultValue={occupation} onChange={onChange} />
                     </Form.Group>
 
@@ -120,7 +121,7 @@ const CreateProfile = ({auth, buildProfile, history}) => {
                     </Form.Group>
 
                     <Form.Group controlId="formBasicSkills">
-                        <Form.Label>Skills</Form.Label>
+                        <Form.Label>Skills (Required)</Form.Label>
                         <Form.Control type="text" name="skills" placeholder="What're your skills (enter as comma-separated list)?" defaultValue={skills} onChange={onChange} />
                     </Form.Group>
 
