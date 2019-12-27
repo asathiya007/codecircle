@@ -5,11 +5,13 @@ import Spinner from '../../layout/Spinner/Spinner';
 import {getProfile} from '../../../actions/profile';
 import { deleteUser } from '../../../actions/auth';  
 import Button from 'react-bootstrap/Button';
+import Education from '../Education/Education';
+import Experience from '../Experience/Experience';
 
 const Dashboard = ({auth: {user}, profile: {profile, loading}, getProfile, deleteUser}) => {
     useEffect(() => {
         getProfile(); 
-    }, [getProfile]);
+    }, [getProfile, user]);
 
     return loading && profile === null ? <Spinner/> : (
         <div className="h-center top-space">
@@ -37,7 +39,11 @@ const Dashboard = ({auth: {user}, profile: {profile, loading}, getProfile, delet
                                 <i className="fas fa-briefcase"></i>
                                 {' '}Add Experience
                             </Button>
-                            <Button variant="danger" className="ml3" onClick={deleteUser}>
+
+                            <Education education={profile.education} />
+                            <Experience experience={profile.experience} />
+
+                            <Button variant="danger" onClick={deleteUser}>
                                 <i className="fas fa-user-slash"></i>
                                 {' '}Delete Account
                             </Button>

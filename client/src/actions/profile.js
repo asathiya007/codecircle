@@ -61,7 +61,6 @@ export const buildProfile = (formData, history, edit = false) => async dispatch 
     }
 }
 
-// add profile education 
 export const addEducation = (formData, history) => async dispatch => {
     try {
         // update user profile with new education data  
@@ -98,7 +97,6 @@ export const addEducation = (formData, history) => async dispatch => {
     }
 }
 
-// add profile experience
 export const addExperience = (formData, history) => async dispatch => {
     try {
         // update user profile with new education data  
@@ -132,5 +130,61 @@ export const addExperience = (formData, history) => async dispatch => {
             type: PROFILE_ERROR,
             payload: { msg: 'Error in adding experience credential to user profile' }
         }); 
+    }
+}
+
+export const deleteEducation = id => async dispatch => {
+    try {
+        // remove education from user profile 
+        const res = await axios.delete(`/api/profile/education/${id}`);
+        
+        // send new profile data to store (profile)
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        }); 
+
+        // create alert to notify user of profile update
+        dispatch(setAlert('Education credential removed from your profile', 'success'));
+    } catch (error) {
+        // create an alert for each error  
+        const errors = error.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        // clear user profile data (profile)
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in removing education credential from user profile' }
+        });
+    }
+}
+
+export const deleteExperience = id => async dispatch => {
+    try {
+        // remove experience from user profile 
+        const res = await axios.delete(`/api/profile/experience/${id}`);
+        
+        // send new profile data to store (profile)
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        }); 
+
+        // create alert to notify user of profile update
+        dispatch(setAlert('Experience credential removed from your profile', 'success'));
+    } catch (error) {
+        // create an alert for each error  
+        const errors = error.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        // clear user profile data (profile)
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in removing experience credential from user profile' }
+        });
     }
 }
