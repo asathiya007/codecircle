@@ -69,12 +69,12 @@ const CreateProfile = ({auth, buildProfile, history}) => {
     }
 
     if (auth.user) {
-        formData.email = auth.user.email; 
-        formData.name = auth.user.name; 
+        formData.email = auth.user.email;
+        formData.name = auth.user.name;
     }
 
     return auth.user ? (
-        <div className="h-center top-space">
+        <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
                     Create Profile

@@ -48,6 +48,10 @@ html, body {
   margin-top: 100px; 
 }
 
+.top-space {
+  margin-bottom: 50px; 
+}
+
 .alerts {
   z-index: 1; 
   position: absolute;

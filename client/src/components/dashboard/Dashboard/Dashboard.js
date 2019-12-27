@@ -4,17 +4,12 @@ import {connect} from 'react-redux';
 import Spinner from '../../layout/Spinner/Spinner';
 import {getProfile} from '../../../actions/profile';
 import { deleteUser } from '../../../actions/auth';  
-import {Redirect} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-const Dashboard = ({auth: {isAuthenticated, user}, profile: {profile, loading}, getProfile, deleteUser}) => {
+const Dashboard = ({auth: {user}, profile: {profile, loading}, getProfile, deleteUser}) => {
     useEffect(() => {
         getProfile(); 
     }, [getProfile]);
-
-    if (!isAuthenticated) {
-        return <Redirect to="/"/>
-    }
 
     return loading && profile === null ? <Spinner/> : (
         <div className="h-center top-space">
