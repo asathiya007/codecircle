@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
     GET_PROFILE,
+    UPDATE_PROFILE,
     PROFILE_ERROR, 
     CLEAR_PROFILE
 } from './types';
@@ -36,7 +37,7 @@ export const buildProfile = (formData, history, edit = false) => async dispatch 
 
         // send new profile data to store (profile)
         dispatch({
-            type: GET_PROFILE, 
+            type: UPDATE_PROFILE, 
             payload: res.data
         }); 
 
@@ -62,5 +63,37 @@ export const buildProfile = (formData, history, edit = false) => async dispatch 
 
 // add profile education 
 export const addEducation = (formData, history) => async dispatch => {
-    
+    try {
+        // update user profile with new education data  
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const res = await axios.put('/api/profile/education', formData, config);
+
+        // send new profile data to store (profile)
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        }); 
+
+        // create alert to notify user of profile update
+        dispatch(setAlert('Education credential added', 'success'));
+
+        // redirect to dashboard 
+        history.push('/dashboard');
+    } catch (error) {
+        // create an alert for each error  
+        const errors = error.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        // clear user profile data (profile)
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in creating/updating user profile data' }
+        }); 
+    }
 }
