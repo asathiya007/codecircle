@@ -138,25 +138,7 @@ router.put('/education',
         if (!errors.isEmpty()) {
             return res.status(400).json({errors: errors.array()});
         }
-        const {
-            institution,
-            degree,
-            fieldOfStudy,
-            from,
-            to,
-            current,
-            description
-        } = req.body;
-        const newEducation = {
-            institution,
-            degree,
-            fieldOfStudy,
-            from,
-            to,
-            current,
-            description
-        }; 
-
+        
         // fetch profile, if one exists 
         const profile = await Profile.findOne({user: req.user.id});
         if (!profile) {
@@ -166,7 +148,7 @@ router.put('/education',
         }
 
         // add education to profile 
-        profile.education.unshift(newEducation);
+        profile.education.unshift(req.body);
         await profile.save(); 
         res.json(profile);
     } catch (error) {
@@ -199,5 +181,67 @@ router.delete('/education/:id', tokenauth, async (req, res) => {
         res.status(500).json('Server error - unable to delete education from current user profile');
     }
 }); 
+
+// @route   PUT /api/profile/experience
+// @desc    add profile experience 
+// @access  private 
+router.put('/experience', 
+[
+    tokenauth, 
+    [
+        check('title', 'Please enter the job title').not().isEmpty(),
+        check('company', 'Please enter the name of the company').not().isEmpty(),  
+        check('from', 'Please enter the education start date').not().isEmpty()
+    ]
+], async (req, res) => {
+    try {
+        // validate and extract input 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        } 
+
+        // fetch profile, if one exists 
+        const profile = await Profile.findOne({user: req.user.id});
+        if (!profile) {
+            res.status(404).json({errors: [
+                {msg: 'Profile for current user not found'}
+            ]}); 
+        }
+
+        // add experience to profile 
+        profile.experience.unshift(req.body);
+        await profile.save(); 
+        res.json(profile);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json('Server error - unable to add experience to current user profile');
+    }
+});
+
+// @route   DELETE /api/profile/experience/:id
+// @desc    delete profile experience 
+// @access  private 
+router.delete('/experience/:id', tokenauth, async (req, res) => {
+    try {
+        // fetch profile, if one exists 
+        const profile = await Profile.findOne({ user: req.user.id });
+        if (!profile) {
+            res.status(404).json({
+                errors: [
+                    { msg: 'Profile for current user not found' }
+                ]
+            });
+        }
+
+        // remove education from profile  
+        profile.experience = profile.experience.filter(exp => exp._id.toString() !== req.params.id); 
+        await profile.save();
+        res.json(profile);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json('Server error - unable to delete experience from current user profile');
+    }
+});
 
 module.exports = router; 

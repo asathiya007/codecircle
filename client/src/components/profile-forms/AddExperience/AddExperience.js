@@ -4,13 +4,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {addEducation} from '../../../actions/profile';
+import {addExperience} from '../../../actions/profile';
 
-const AddEducation = ({auth, addEducation, history}) => {
+const AddExperience = ({auth, addExperience, history}) => {
     const [formData, setFormData] = useState({
-        institution: '',
-        degree: '',
-        fieldOfStudy: '',
+        title: '',
+        company: '',
+        location: '',
         from: '',
         to: '',
         current: false, 
@@ -19,6 +19,7 @@ const AddEducation = ({auth, addEducation, history}) => {
 
     const onChange = e => {
         if (e.target.name === 'current') {
+            // toggle the 'current' field
             setFormData({...formData, [e.target.name]: !formData.current});
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,34 +28,34 @@ const AddEducation = ({auth, addEducation, history}) => {
 
     const onSubmit = e => {
         e.preventDefault(); 
-        addEducation(formData, history);
+        addExperience(formData, history);
     }
 
     return (auth.user && 
         <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
-                    Add Education
+                    Add Experience
                 </p>
                 <p className="f3 fw4">
-                    <i className="fas fa-graduation-cap"></i>
-                    {' '}Hey {auth.user.name.split(' ')[0]}, tell us about your studies!
+                    <i className="fas fa-briefcase"></i>
+                    {' '}Hey {auth.user.name.split(' ')[0]}, tell us about your work experience!
                 </p>
 
                 <Form onSubmit={onSubmit}>
-                    <Form.Group controlId="formBasicInstitution">
-                        <Form.Label>Institution (Required)</Form.Label>
-                        <Form.Control type="text" placeholder="Where did you study?" name="institution" onChange={onChange}/>
+                    <Form.Group controlId="formBasicTitle">
+                        <Form.Label>Title (Required)</Form.Label>
+                        <Form.Control type="text" placeholder="What is/was your job title?" name="title" onChange={onChange}/>
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicDegree">
-                        <Form.Label>Degree (Required)</Form.Label>
-                        <Form.Control type="text" placeholder="What degree did you work towards?" name="degree" onChange={onChange} />
+                    <Form.Group controlId="formBasicCompany">
+                        <Form.Label>Company (Required)</Form.Label>
+                        <Form.Control type="text" placeholder="What company did you work at?" name="company" onChange={onChange} />
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicFieldOfStudy">
-                        <Form.Label>Field of Study (Required)</Form.Label>
-                        <Form.Control type="text" placeholder="What did you study?" name="fieldOfStudy" onChange={onChange}/>
+                    <Form.Group controlId="formBasicLocation">
+                        <Form.Label>Location</Form.Label>
+                        <Form.Control type="text" placeholder="Where did you work?" name="location" onChange={onChange}/>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicFrom">
@@ -79,19 +80,26 @@ const AddEducation = ({auth, addEducation, history}) => {
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
+
+                    <Button variant="secondary" onClick={e => {
+                        e.preventDefault(); 
+                        history.push('/dashboard');
+                    }} className="ml3">
+                        Go Back
+                    </Button>
                 </Form>
             </div>
         </div>
     )
 }
 
-AddEducation.propTypes = {
+AddExperience.propTypes = {
     auth: PropTypes.object.isRequired, 
-    addEducation: PropTypes.func.isRequired
+    addExperience: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
     auth: state.auth
 }); 
 
-export default connect(mapStateToProps, {addEducation})(withRouter(AddEducation)); 
+export default connect(mapStateToProps, {addExperience})(withRouter(AddExperience)); 

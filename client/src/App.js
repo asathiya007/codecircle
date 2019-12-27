@@ -14,6 +14,7 @@ import CreateProfile from './components/profile-forms/CreateProfile/CreateProfil
 import EditProfile from './components/profile-forms/EditProfile/EditProfile';
 import PrivateRoute from './components/routing/PrivateRoute/PrivateRoute';
 import AddEducation from './components/profile-forms/AddEducation/AddEducation';
+import AddExperience from './components/profile-forms/AddExperience/AddExperience'; 
 
 function App() {
   useEffect(() => {
@@ -34,6 +35,7 @@ function App() {
             <PrivateRoute exact path="/create-profile" component={CreateProfile} />
             <PrivateRoute exact path="/edit-profile" component={EditProfile} />
             <PrivateRoute exact path="/add-education" component={AddEducation} />
+            <PrivateRoute exact path="/add-experience" component={AddExperience} />
           </Switch>
         </Fragment>
       </Router>

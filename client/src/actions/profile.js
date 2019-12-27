@@ -79,7 +79,7 @@ export const addEducation = (formData, history) => async dispatch => {
         }); 
 
         // create alert to notify user of profile update
-        dispatch(setAlert('Education credential added', 'success'));
+        dispatch(setAlert('Education credential added to your profile', 'success'));
 
         // redirect to dashboard 
         history.push('/dashboard');
@@ -93,7 +93,44 @@ export const addEducation = (formData, history) => async dispatch => {
         // clear user profile data (profile)
         dispatch({
             type: PROFILE_ERROR,
-            payload: { msg: 'Error in creating/updating user profile data' }
+            payload: { msg: 'Error in adding education credential to user profile' }
+        }); 
+    }
+}
+
+// add profile experience
+export const addExperience = (formData, history) => async dispatch => {
+    try {
+        // update user profile with new education data  
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const res = await axios.put('/api/profile/experience', formData, config);
+
+        // send new profile data to store (profile)
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        }); 
+
+        // create alert to notify user of profile update
+        dispatch(setAlert('Experience credential added to your profile', 'success'));
+
+        // redirect to dashboard 
+        history.push('/dashboard');
+    } catch (error) {
+        // create an alert for each error  
+        const errors = error.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+
+        // clear user profile data (profile)
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in adding experience credential to user profile' }
         }); 
     }
 }

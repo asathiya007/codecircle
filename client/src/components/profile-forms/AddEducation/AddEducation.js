@@ -19,6 +19,7 @@ const AddEducation = ({auth, addEducation, history}) => {
 
     const onChange = e => {
         if (e.target.name === 'current') {
+            // toggle the 'current' field
             setFormData({...formData, [e.target.name]: !formData.current});
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -78,6 +79,13 @@ const AddEducation = ({auth, addEducation, history}) => {
 
                     <Button variant="primary" type="submit">
                         Submit
+                    </Button>
+
+                    <Button variant="secondary" onClick={e => {
+                        e.preventDefault(); 
+                        history.push('/dashboard');
+                    }} className="ml3">
+                        Go Back
                     </Button>
                 </Form>
             </div>
