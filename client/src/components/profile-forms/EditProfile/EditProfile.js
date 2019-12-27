@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import Spinner from '../../layout/Spinner/Spinner';
 import { buildProfile } from '../../../actions/profile';
 import { withRouter } from 'react-router-dom';
+import {getProfile} from '../../../actions/profile';
 
-const EditProfile = ({ auth, buildProfile, history }) => {
+const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfile, history }) => {
 
     const [displaySocial, toggleSocial] = useState(false);
 
@@ -45,6 +46,33 @@ const EditProfile = ({ auth, buildProfile, history }) => {
         instagram
     } = formData;
 
+    const [fetchedProfileData, toggleFetchProfData] = useState(false);
+
+    useEffect(() => {
+        if (!profile) {
+            getProfile();
+            toggleFetchProfData(true);
+        }
+         
+        if (profile) {
+            setFormData({
+                company: loading || !profile.company ? '' : profile.company,
+                website: loading || !profile.website ? '' : profile.website,
+                location: loading || !profile.location ? '' : profile.location,
+                phone: loading || !profile.phone ? '' : profile.phone,
+                occupation: loading || !profile.occupation ? '' : profile.occupation,
+                skills: loading || !profile.skills ? '' : profile.skills,
+                githubusername: loading || !profile.githubusername ? '' : profile.githubusername,
+                bio: loading || !profile.bio ? '' : profile.bio,
+                twitter: loading || !profile.social.twitter ? '' : profile.social.twitter,
+                facebook: loading || !profile.social.facebook ? '' : profile.social.facebook,
+                linkedin: loading || !profile.social.linkedin ? '' : profile.social.linkedin,
+                youtube: loading || !profile.social.youtube ? '' : profile.social.youtube,
+                instagram: loading || !profile.social.instagram ? '' : profile.social.instagram
+            });
+        }
+    }, [profile, loading, fetchedProfileData, getProfile]); 
+
     const fitPhoneNum = phoneNum => {
         let newPhoneNum = '';
         for (let i = 0; i < phoneNum.length; i++) {
@@ -65,7 +93,7 @@ const EditProfile = ({ auth, buildProfile, history }) => {
 
     const onSubmit = e => {
         e.preventDefault();
-        buildProfile(formData, history);
+        buildProfile(formData, history, true);
     }
 
     if (auth.user) {
@@ -81,7 +109,7 @@ const EditProfile = ({ auth, buildProfile, history }) => {
                 </p>
                 <p className="f3 fw4">
                     <i className="fas fa-user-circle"></i>
-                    {' '}Hey {auth.user.name}, let's update your CodeCircle profile!
+                    {' '}Hey {auth.user.name.split(' ')[0]}, it's time to update your CodeCircle profile!
                 </p>
 
                 <Form onSubmit={onSubmit}>
@@ -176,7 +204,10 @@ const EditProfile = ({ auth, buildProfile, history }) => {
                         Submit
                     </Button>
 
-                    <Button variant="secondary" href="/dashboard" className="ml3">
+                    <Button variant="secondary" onClick={e => {
+                        e.preventDefault(); 
+                        history.push('/dashboard');
+                    }} className="ml3">
                         Go Back
                     </Button>
                 </Form>
@@ -187,11 +218,13 @@ const EditProfile = ({ auth, buildProfile, history }) => {
 
 EditProfile.propTypes = {
     auth: PropTypes.object.isRequired,
+    profile: PropTypes.object.isRequired,
     buildProfile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    profile: state.profile
 });
 
-export default connect(mapStateToProps, { buildProfile })(withRouter(EditProfile)); 
+export default connect(mapStateToProps, { buildProfile, getProfile })(withRouter(EditProfile)); 

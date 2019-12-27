@@ -40,7 +40,7 @@ router.post('/',
         check('occupation', 'Please enter your occupation').not().isEmpty(),
         check('skills', 'Please enter your skills').not().isEmpty(),
         check('email', 'Please provide user\'s email address').isEmail(),
-        check('email', 'Please provide user\'s name').not().isEmpty()
+        check('name', 'Please provide user\'s name').not().isEmpty()
     ], 
     async (req, res) => {
         try {
@@ -80,7 +80,11 @@ router.post('/',
             if (occupation) profileFields.occupation = occupation; 
             if (githubusername || githubusername === '') profileFields.githubusername = githubusername; 
             if (skills) {
-                profileFields.skills = skills.split(',').map(skill => skill.trim()); 
+                if (Array.isArray(skills)) {
+                    profileFields.skills = skills; 
+                } else {
+                    profileFields.skills = skills.split(',').map(skill => skill.trim()); 
+                }
             }
 
             // build profile social object
