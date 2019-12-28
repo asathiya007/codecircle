@@ -4,24 +4,40 @@ import Nav from 'react-bootstrap/Nav';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {logout} from '../../../actions/auth';
+import {withRouter} from 'react-router-dom';
 
-const Navigation = ({auth: {isAuthenticated, loading}, logout}) => {
+const Navigation = ({auth: {isAuthenticated, loading}, logout, history}) => {
     // show links based on if user is authenticated 
     const showLinks = () => {
         if (!loading && isAuthenticated) {
             return <Fragment>
+                <Nav.Link href="/profiles" className="text-white">
+                    <span className="blue-hover">
+                        Coders
+                    </span>
+                </Nav.Link>
+                <Nav.Link href="/dashboard" className="text-white">
+                    <span className="blue-hover">
+                        Dashboard
+                    </span>
+                </Nav.Link>
                 <Nav.Link href="/" className="text-white" onClick={e => {
                     e.preventDefault(); 
-                    logout(); 
+                    logout(history); 
                 }}>
                     <span className="blue-hover">
                         Log Out
-                </span>
+                    </span>
                 </Nav.Link>
             </Fragment>
         }
 
         return <Fragment>
+            <Nav.Link href="/profiles" className="text-white">
+                <span className="blue-hover">
+                    Coders
+                    </span>
+            </Nav.Link>
             <Nav.Link href="/register" className="text-white">
                 <span className="blue-hover">
                     Register
@@ -60,4 +76,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 }); 
 
-export default connect(mapStateToProps, {logout})(Navigation); 
+export default connect(mapStateToProps, {logout})(withRouter(Navigation)); 

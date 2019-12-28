@@ -100,7 +100,7 @@ export const login = ({ email, password }) => async dispatch => {
     }
 }
 
-export const logout = () => dispatch => {
+export const logout = (history) => dispatch => {
     // clear user data in store (auth)
     dispatch({
         type: LOGOUT
@@ -110,6 +110,9 @@ export const logout = () => dispatch => {
     dispatch({
         type: CLEAR_PROFILE
     }); 
+
+    // reroute to landing page 
+    history.push('/');
 }
 
 export const deleteUser = () => async dispatch => {

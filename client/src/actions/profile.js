@@ -3,7 +3,8 @@ import {
     GET_PROFILE,
     UPDATE_PROFILE,
     PROFILE_ERROR, 
-    CLEAR_PROFILE
+    CLEAR_PROFILE,
+    GET_PROFILES
 } from './types';
 import {setAlert} from './alert';
 
@@ -16,10 +17,11 @@ export const getProfile = () => async dispatch => {
             payload: res.data
         }); 
     } catch (error) {
+       // clear user profile data (profile)
         dispatch({type: CLEAR_PROFILE});
         dispatch({
             type: PROFILE_ERROR, 
-            payload: {msg: 'Error in obtaining current user profile data'}
+            payload: {msg: 'Error in getting current user profile data'}
         }); 
     }
 }
@@ -147,13 +149,8 @@ export const deleteEducation = id => async dispatch => {
         // create alert to notify user of profile update
         dispatch(setAlert('Education credential removed from your profile', 'success'));
     } catch (error) {
-        // create an alert for each error  
-        const errors = error.response.data.errors;
-        if (errors) {
-            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-        }
-
         // clear user profile data (profile)
+        dispatch({type: CLEAR_PROFILE}); 
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in removing education credential from user profile' }
@@ -175,16 +172,34 @@ export const deleteExperience = id => async dispatch => {
         // create alert to notify user of profile update
         dispatch(setAlert('Experience credential removed from your profile', 'success'));
     } catch (error) {
-        // create an alert for each error  
-        const errors = error.response.data.errors;
-        if (errors) {
-            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-        }
-
         // clear user profile data (profile)
+        dispatch({type: CLEAR_PROFILE});
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in removing experience credential from user profile' }
+        });
+    }
+}
+
+export const getProfiles = () => async dispatch => {
+    try {
+        // clear current user profile from store (profile)
+        dispatch({type: CLEAR_PROFILE});
+
+        // get all users' profile data 
+        const res = await axios.get('/api/profile/all');
+        
+        // send all profiles data to store (profile)
+        dispatch({
+            type: GET_PROFILES,
+            payload: res.data
+        }); 
+    } catch (error) {
+        // clear user profile data (profile)
+        dispatch({type: CLEAR_PROFILE});
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in getting all users\' profile data' }
         });
     }
 }

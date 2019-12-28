@@ -27,9 +27,28 @@ router.get('/me', tokenauth, async (req, res) => {
         res.json(profile);
     } catch (error) {
         console.error(error.message);
-        res.status(500).json('Server error - unable to get current user profile');
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to get current user profile' }
+            ]
+        });
     }
 });
+
+// @route   GET /api/profile/all
+// @desc    get all users' profiles
+// @access  public 
+router.get('/all', async (req, res) => {
+    try {
+        const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+        res.json(profiles);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({errors: [
+            {msg: 'Server error - unable to get all user profiles'}
+        ]}); 
+    }
+}); 
 
 // @route   POST /api/profile/
 // @desc    create or update current user profile 
@@ -153,7 +172,11 @@ router.put('/education',
         res.json(profile);
     } catch (error) {
         console.error(error.message);
-        res.status(500).json('Server error - unable to add education to current user profile');
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to add education to current user profile' }
+            ]
+        });
     }
 }); 
 
@@ -178,7 +201,11 @@ router.delete('/education/:id', tokenauth, async (req, res) => {
         res.json(profile);
     } catch (error) {
         console.error(error.message);
-        res.status(500).json('Server error - unable to delete education from current user profile');
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to delete education from current user profile' }
+            ]
+        });
     }
 }); 
 
@@ -215,7 +242,11 @@ router.put('/experience',
         res.json(profile);
     } catch (error) {
         console.error(error.message);
-        res.status(500).json('Server error - unable to add experience to current user profile');
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to add experience to current user profile' }
+            ]
+        });
     }
 });
 
@@ -240,7 +271,11 @@ router.delete('/experience/:id', tokenauth, async (req, res) => {
         res.json(profile);
     } catch (error) {
         console.error(error.message);
-        res.status(500).json('Server error - unable to delete experience from current user profile');
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to delete experience from current user profile' }
+            ]
+        });
     }
 });
 
