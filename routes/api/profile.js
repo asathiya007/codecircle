@@ -2,6 +2,8 @@ const express = require('express');
 const tokenauth = require('../../middleware/tokenauth');
 const Profile = require('../../models/Profile');
 const {check, validationResult} = require('express-validator');
+const request = require('request');
+const config = require('config');
 
 const router = express.Router(); 
 
@@ -302,5 +304,34 @@ router.delete('/experience/:id', tokenauth, async (req, res) => {
         });
     }
 });
+
+// @route   GET /api/profile/github/:username
+// @desc    get github repos
+// @access  public 
+router.get('/github/:username', (req, res) => {
+    try {
+        // fetch GitHub repos from GitHub API by GitHub username
+        const options = {
+            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get("githubClientId")}&client_secret=${config.get("githubSecret")}`,
+            method: 'GET',
+            headers: {'user-agent': 'node.js'}
+        }
+        request(options, (error, response, body) => {
+            if (error) console.error(error.message);
+            if (response.statusCode !== 200) {
+                res.status(404).json({errors: [
+                    {msg: 'No GitHub profile found for this user'}
+                ]}); 
+            }
+
+            res.json(JSON.parse(body));
+        }); 
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({errors: [
+            {msg: 'Server error - unable to get GitHub repos'}
+        ]}); 
+    }
+})
 
 module.exports = router; 

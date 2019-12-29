@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import {withRouter} from 'react-router-dom';
 import ProfileEducation from '../ProfileEducation/ProfileEducation';
 import ProfileExperience from '../ProfileExperience/ProfileExperience';
+import ProfileGitHub from '../ProfileGitHub/ProfileGitHub';
 
 const Profile = ({match, getProfileById, profile: {profile, loading}, auth, history}) => {
     useEffect(() => {
@@ -36,6 +37,7 @@ const Profile = ({match, getProfileById, profile: {profile, loading}, auth, hist
                         <ProfileAbout profile={profile} />
                         <ProfileEducation profile={profile} />
                         <ProfileExperience profile={profile} />
+                        <ProfileGitHub username={profile.githubusername} />
                     </div>
                 </div>
             </div>

@@ -4,7 +4,8 @@ import {
     UPDATE_PROFILE,
     PROFILE_ERROR, 
     CLEAR_PROFILE,
-    GET_PROFILES
+    GET_PROFILES,
+    GET_REPOS
 } from './types';
 import {setAlert} from './alert';
 
@@ -17,8 +18,7 @@ export const getProfile = () => async dispatch => {
             payload: res.data
         }); 
     } catch (error) {
-       // clear user profile data (profile)
-        dispatch({type: CLEAR_PROFILE});
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR, 
             payload: {msg: 'Error in getting current user profile data'}
@@ -55,7 +55,7 @@ export const buildProfile = (formData, history, edit = false) => async dispatch 
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger'))); 
         }
 
-        // clear user profile data (profile)
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR, 
             payload: {msg: 'Error in creating/updating user profile data'}
@@ -91,7 +91,7 @@ export const addEducation = (formData, history) => async dispatch => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
 
-        // clear user profile data (profile)
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in adding education credential to user profile' }
@@ -127,7 +127,7 @@ export const addExperience = (formData, history) => async dispatch => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
 
-        // clear user profile data (profile)
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in adding experience credential to user profile' }
@@ -149,8 +149,7 @@ export const deleteEducation = id => async dispatch => {
         // create alert to notify user of profile update
         dispatch(setAlert('Education credential removed from your profile', 'success'));
     } catch (error) {
-        // clear user profile data (profile)
-        dispatch({type: CLEAR_PROFILE}); 
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in removing education credential from user profile' }
@@ -172,8 +171,7 @@ export const deleteExperience = id => async dispatch => {
         // create alert to notify user of profile update
         dispatch(setAlert('Experience credential removed from your profile', 'success'));
     } catch (error) {
-        // clear user profile data (profile)
-        dispatch({type: CLEAR_PROFILE});
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in removing experience credential from user profile' }
@@ -195,8 +193,7 @@ export const getProfiles = () => async dispatch => {
             payload: res.data
         }); 
     } catch (error) {
-        // clear user profile data (profile)
-        dispatch({type: CLEAR_PROFILE});
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in getting all users\' profile data' }
@@ -215,8 +212,26 @@ export const getProfileById = id => async dispatch => {
             payload: res.data
         }); 
     } catch (error) {
-        // clear user profile data (profile)
-        dispatch({ type: CLEAR_PROFILE });
+        // clear user profile data and send error data to store (profile)
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in getting all users\' profile data' }
+        });
+    }
+}
+
+export const getGitHubRepos = username => async dispatch => {
+    try {
+        // get GitHub repos by GitHub username
+        const res = await axios.get(`/api/profile/github/${username}`); 
+
+        // send repos data to store (profile)
+        dispatch({
+            type: GET_REPOS, 
+            payload: res.data
+        }); 
+    } catch (error) {
+        // clear user profile data and send error data to store (profile)
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: 'Error in getting all users\' profile data' }

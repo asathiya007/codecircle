@@ -106,3 +106,7 @@ html, body {
 .profile-education {
   grid-area: edu;
 }
+
+.profile-github {
+  grid-area: github;
+}
