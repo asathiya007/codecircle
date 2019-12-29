@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/me', tokenauth, async (req, res) => {
     try {
         // find the profile
-        const profile = await Profile.findOne({user: req.user.id}); 
+        const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']); 
 
         // check if the profile does not exist
         if (!profile) {
@@ -19,9 +19,6 @@ router.get('/me', tokenauth, async (req, res) => {
                 {msg: 'Current user profile does not exist'}
             ]}); 
         }
-
-        // populate user object with name and avatar pic
-        profile.populate('user', ['name', 'avatar']); 
 
         // send profile data to client
         res.json(profile);
@@ -47,6 +44,33 @@ router.get('/all', async (req, res) => {
         res.status(500).json({errors: [
             {msg: 'Server error - unable to get all user profiles'}
         ]}); 
+    }
+}); 
+
+// @route   GET /api/profile/:id
+// @desc    get user profile by user id
+// @access  public 
+router.get('/:id', async (req, res) => {
+    try {
+        // get the user's profile with the provided id 
+        let profile = await Profile.findOne({ user: req.params.id }).populate('user', ['name', 'avatar']);
+
+        // check if the profile exists 
+        if (!profile) {
+            res.status(404).json({errors: [
+                {msg: 'User profile not found'}
+            ]}); 
+        }
+
+        // send user profile data to client 
+        res.json(profile);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to get user profile by id' }
+            ]
+        }); 
     }
 }); 
 

@@ -14,7 +14,7 @@ const ProfileItem = ({profile}) => {
                 <div className="v-center h-center">
                     <Image roundedCircle src={profile.user.avatar} />
                     <div className="mt3 h-center">
-                        <Button variant="primary" className="w-80" href={`/profiles/${profile._id}`}>Visit Profile</Button>
+                        <Button variant="primary" className="w-80" href={`/profiles/${profile.user._id}`}>Visit Profile</Button>
                     </div>
                 </div>
                 <div className="v-center w-75">

@@ -6,6 +6,15 @@ html, body {
   color: #0275d8;
 }
 
+.color-black {
+  color: black;
+}
+
+.color-black:hover {
+  color: black;
+  cursor: pointer; 
+}
+
 .landing {
   position: relative;
   background: url('./img/landing.jpg') no-repeat center center/cover;
@@ -57,5 +66,24 @@ html, body {
   position: absolute;
   margin-left: 30%; 
   margin-right: 30%; 
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-areas:
+    'top top'
+    'about about'
+    'exp edu'
+    'github github';
+  grid-gap: 1rem;
+}
+
+.profile-top {
+  grid-area: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 

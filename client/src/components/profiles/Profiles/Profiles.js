@@ -10,7 +10,7 @@ const Profiles = ({profile, getProfiles}) => {
     }, [getProfiles]); 
 
     return (profile && 
-        <div className="h-center top-space">
+        <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
                     Profiles

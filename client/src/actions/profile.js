@@ -203,3 +203,23 @@ export const getProfiles = () => async dispatch => {
         });
     }
 }
+
+export const getProfileById = id => async dispatch => {
+    try {
+        // get user profile data by id 
+        const res = await axios.get(`/api/profile/${id}`);
+        
+        // send the profile data to the store (profile)
+        dispatch({
+            type: GET_PROFILE, 
+            payload: res.data
+        }); 
+    } catch (error) {
+        // clear user profile data (profile)
+        dispatch({ type: CLEAR_PROFILE });
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Error in getting all users\' profile data' }
+        });
+    }
+}
