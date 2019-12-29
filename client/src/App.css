@@ -73,7 +73,7 @@ html, body {
   grid-template-areas:
     'top top'
     'about about'
-    'exp edu'
+    'edu exp'
     'github github';
   grid-gap: 1rem;
 }
@@ -97,4 +97,12 @@ html, body {
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.profile-experience {
+  grid-area: exp;
+}
+
+.profile-education {
+  grid-area: edu;
 }

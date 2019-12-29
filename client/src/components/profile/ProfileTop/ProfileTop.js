@@ -7,7 +7,7 @@ const ProfileTop = ({profile}) => {
     return (
         <Jumbotron className="profile-top">
             <Image roundedCircle src={profile.user.avatar} alt="profile" className="w-40"/>
-            <p className="f2 fw4 tc mt2">
+            <p className="f2 fw5 tc mt2">
                 {profile.user.name}
             </p>
             <p className="f3 fw3 tc">

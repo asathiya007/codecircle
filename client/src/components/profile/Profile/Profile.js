@@ -7,6 +7,8 @@ import ProfileTop from '../../profile/ProfileTop/ProfileTop';
 import ProfileAbout from '../../profile/ProfileAbout/ProfileAbout';
 import Button from 'react-bootstrap/Button';
 import {withRouter} from 'react-router-dom';
+import ProfileEducation from '../ProfileEducation/ProfileEducation';
+import ProfileExperience from '../ProfileExperience/ProfileExperience';
 
 const Profile = ({match, getProfileById, profile: {profile, loading}, auth, history}) => {
     useEffect(() => {
@@ -32,6 +34,8 @@ const Profile = ({match, getProfileById, profile: {profile, loading}, auth, hist
                     <div className="profile-grid mt2">
                         <ProfileTop profile={profile} />
                         <ProfileAbout profile={profile} />
+                        <ProfileEducation profile={profile} />
+                        <ProfileExperience profile={profile} />
                     </div>
                 </div>
             </div>
