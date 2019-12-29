@@ -81,7 +81,7 @@ const CreateProfile = ({auth, buildProfile, history}) => {
                     Create Profile
                 </p>
                 <p className="f3 fw4">
-                    <i className="fas fa-user-circle"></i>
+                    <i className="fas fa-user-edit"></i>
                     {' '}Hey {auth.user.name.split(' ')[0]}, it's time to create your CodeCircle profile!
                 </p>
                 <Form onSubmit={onSubmit}>

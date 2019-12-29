@@ -4,6 +4,7 @@ import {getProfileById} from '../../../actions/profile';
 import {connect} from 'react-redux';
 import Spinner from '../../layout/Spinner/Spinner';
 import ProfileTop from '../../profile/ProfileTop/ProfileTop';
+import ProfileAbout from '../../profile/ProfileAbout/ProfileAbout';
 import Button from 'react-bootstrap/Button';
 import {withRouter} from 'react-router-dom';
 
@@ -30,6 +31,7 @@ const Profile = ({match, getProfileById, profile: {profile, loading}, auth, hist
                     }
                     <div className="profile-grid mt2">
                         <ProfileTop profile={profile} />
+                        <ProfileAbout profile={profile} />
                     </div>
                 </div>
             </div>

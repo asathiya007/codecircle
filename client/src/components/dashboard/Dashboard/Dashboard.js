@@ -14,7 +14,7 @@ const Dashboard = ({auth: {user}, profile: {profile, loading}, getProfile, delet
     }, [getProfile, user]);
 
     return loading && profile === null ? <Spinner/> : (
-        <div className="h-center top-space">
+        <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
                     Dashboard
@@ -24,11 +24,15 @@ const Dashboard = ({auth: {user}, profile: {profile, loading}, getProfile, delet
                     {' '}Welcome, {user && user.name}!
                 </p>
 
-                {profile !== null ? (
+                {profile !== null && user ? (
                     <Fragment>
                         <div>
-                            <Button variant="primary" href="/edit-profile" className="mr3">
+                            <Button variant="primary" href={`/profiles/${user._id}`}className="mr3">
                                 <i className="fas fa-user-circle"></i>
+                                {' '}View Profile
+                            </Button>
+                            <Button variant="primary" href="/edit-profile" className="mh3">
+                                <i className="fas fa-user-edit"></i>
                                 {' '}Edit Profile
                             </Button>
                             <Button variant="primary" href="/add-education" className="mh3">

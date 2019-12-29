@@ -109,7 +109,7 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
                     Edit Profile
                 </p>
                 <p className="f3 fw4">
-                    <i className="fas fa-user-circle"></i>
+                    <i className="fas fa-user-edit"></i>
                     {' '}Hey {auth.user.name.split(' ')[0]}, it's time to update your CodeCircle profile!
                 </p>
 
