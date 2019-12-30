@@ -8,13 +8,13 @@ const ProfileAbout = ({profile}) => {
             {
                 profile.bio && (
                     <Jumbotron>
-                        <p className="f3 fw5 tc">{profile.name.trim().split(' ')[0]}'s Bio</p>
+                        <p className="f3 fw5 tc text-primary">{profile.name.trim().split(' ')[0]}'s Bio</p>
                         <p>{profile.bio}</p>
                     </Jumbotron>
                 )
             }
             <Jumbotron>
-                <p className="f3 fw5 tc">{profile.name.trim().split(' ')[0]}'s Skills</p>
+                <p className="f3 fw5 tc text-primary">{profile.name.trim().split(' ')[0]}'s Skills</p>
                 <div className="skills">
                     {
                         profile.skills.map((skill, index) => (

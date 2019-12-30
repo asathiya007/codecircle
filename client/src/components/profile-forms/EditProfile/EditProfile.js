@@ -116,52 +116,52 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
                 <Form onSubmit={onSubmit}>
                     <Form.Group controlId="formBasicName">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" name="name" defaultValue={auth.user.name} readOnly />
+                        <Form.Control type="text" name="name" value={auth.user.name} readOnly />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email Address</Form.Label>
-                        <Form.Control type="email" name="email" defaultValue={auth.user.email} readOnly />
+                        <Form.Control type="email" name="email" value={auth.user.email} readOnly />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPhone">
                         <Form.Label>Phone Number</Form.Label>
-                        <Form.Control type="text" name="phone" placeholder="What's your phone number?" defaultValue={phone} onChange={onChange} />
+                        <Form.Control type="text" name="phone" placeholder="What's your phone number?" value={phone} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicWebsite">
                         <Form.Label>Website</Form.Label>
-                        <Form.Control type="text" name="website" placeholder="Do you have a website?" defaultValue={website} onChange={onChange} />
+                        <Form.Control type="text" name="website" placeholder="Do you have a website?" value={website} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicLocation">
                         <Form.Label>Location</Form.Label>
-                        <Form.Control type="text" name="location" placeholder="Where do you live?" defaultValue={location} onChange={onChange} />
+                        <Form.Control type="text" name="location" placeholder="Where do you live?" value={location} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicOccupation">
                         <Form.Label>Occupation (Required)</Form.Label>
-                        <Form.Control type="text" name="occupation" placeholder="What's your occupation (intern, junior developer, senior developer, etc.)?" defaultValue={occupation} onChange={onChange} />
+                        <Form.Control type="text" name="occupation" placeholder="What's your occupation (intern, junior developer, senior developer, etc.)?" value={occupation} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicCompany">
                         <Form.Label>Company</Form.Label>
-                        <Form.Control type="text" name="company" placeholder="What company do you work for (corporation, startup, freelance, etc.)?" defaultValue={company} onChange={onChange} />
+                        <Form.Control type="text" name="company" placeholder="What company do you work for (corporation, startup, freelance, etc.)?" value={company} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicSkills">
                         <Form.Label>Skills (Required)</Form.Label>
-                        <Form.Control type="text" name="skills" placeholder="What're your skills (enter as comma-separated list)?" defaultValue={skills} onChange={onChange} />
+                        <Form.Control type="text" name="skills" placeholder="What're your skills (enter as comma-separated list)?" value={skills} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicGitHub">
                         <Form.Label>GitHub Username</Form.Label>
-                        <Form.Control type="text" name="githubusername" placeholder="What's your GitHub username?" defaultValue={githubusername} onChange={onChange} />
+                        <Form.Control type="text" name="githubusername" placeholder="What's your GitHub username?" value={githubusername} onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicBio">
                         <Form.Label>Bio</Form.Label>
-                        <Form.Control type="text" as="textarea" name="bio" placeholder="Tell us a little about yourself!" defaultValue={bio} onChange={onChange} />
+                        <Form.Control type="text" as="textarea" name="bio" placeholder="Tell us a little about yourself!" value={bio} onChange={onChange} />
                     </Form.Group>
 
                     <div className="mb3">
@@ -174,27 +174,27 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
                             <Fragment>
                                 <Form.Group controlId="formBasicFacebook">
                                     <Form.Label>Facebook</Form.Label>
-                                    <Form.Control type="text" name="facebook" placeholder="Link to your Facebook profile!" defaultValue={facebook} onChange={onChange} />
+                                    <Form.Control type="text" name="facebook" placeholder="Link to your Facebook profile!" value={facebook} onChange={onChange} />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicTwitter">
                                     <Form.Label>Twitter</Form.Label>
-                                    <Form.Control type="text" name="twitter" placeholder="Link to your Twitter profile!" defaultValue={twitter} onChange={onChange} />
+                                    <Form.Control type="text" name="twitter" placeholder="Link to your Twitter profile!" value={twitter} onChange={onChange} />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicYouTube">
                                     <Form.Label>YouTube</Form.Label>
-                                    <Form.Control type="text" name="youtube" placeholder="Link to your YouTube channel!" defaultValue={youtube} onChange={onChange} />
+                                    <Form.Control type="text" name="youtube" placeholder="Link to your YouTube channel!" value={youtube} onChange={onChange} />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicInstagram">
                                     <Form.Label>Instagram</Form.Label>
-                                    <Form.Control type="text" name="instagram" placeholder="Link to your Instagram profile!" defaultValue={instagram} onChange={onChange} />
+                                    <Form.Control type="text" name="instagram" placeholder="Link to your Instagram profile!" value={instagram} onChange={onChange} />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicLinkedIn">
                                     <Form.Label>LinkedIn</Form.Label>
-                                    <Form.Control type="text" name="linkedin" placeholder="Link to your LinkedIn profile!" defaultValue={linkedin} onChange={onChange} />
+                                    <Form.Control type="text" name="linkedin" placeholder="Link to your LinkedIn profile!" value={linkedin} onChange={onChange} />
                                 </Form.Group>
                             </Fragment>
                         )

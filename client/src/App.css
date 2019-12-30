@@ -110,3 +110,7 @@ html, body {
 .profile-github {
   grid-area: github;
 }
+
+.profile-github .repo {
+  display: flex;
+}

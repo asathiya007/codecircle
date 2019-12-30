@@ -25,19 +25,15 @@ export default function(state = initialState, action) {
             return {
                 ...state, 
                 profile: payload, 
-                profiles: [], 
                 loading: false, 
-                error: {}, 
-                repos: []
+                error: {}
             }
         case GET_PROFILES: 
             return {
                 ...state, 
                 profiles: payload,
-                profile: null, 
                 loading: false,
-                error: {}, 
-                repos: []
+                error: {}
             }
         case CLEAR_PROFILE: 
         case DELETE_ACCOUNT: 
@@ -62,8 +58,9 @@ export default function(state = initialState, action) {
             return {
                 ...state, 
                 loading: false, 
-                repos: payload,
-                error: {}
+                repos: payload, 
+                error: {}, 
+                profiles: []
             }
         default: 
             return state; 

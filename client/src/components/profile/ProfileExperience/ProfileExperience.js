@@ -7,13 +7,13 @@ const ProfileExperience = ({ profile }) => {
     return (
         <div className="profile-experience h-100">
             <Jumbotron className="h-100">
-                <p className="f3 fw5">{profile.name.trim().split(' ')[0]}'s Experience</p>
+                <p className="f3 fw5 text-primary">{profile.name.trim().split(' ')[0]}'s Experience</p>
                 {profile.experience && profile.experience.length > 0 ? (
                     <div>
                         {
                             profile.experience.map(exp => (
                                 <div key={exp._id}>
-                                    <p className="f4 fw5 mv0 pv0">{exp.institution}</p>
+                                    <p className="f4 fw5 mv0 pv0">{exp.company}</p>
                                     <p className="mv0 pv0">
                                         <span className="fw5">Duration: </span>
                                         <Moment format="YYYY/MM/DD">
@@ -25,7 +25,7 @@ const ProfileExperience = ({ profile }) => {
                                     </p>
                                     <p className="mv0 pv0">
                                         <span className="fw5">Job: </span>
-                                        {exp.title} at {exp.company}
+                                        {exp.title}
                                     </p>
                                     {
                                         exp.location && (

@@ -332,6 +332,6 @@ router.get('/github/:username', (req, res) => {
             {msg: 'Server error - unable to get GitHub repos'}
         ]}); 
     }
-})
+}); 
 
 module.exports = router; 

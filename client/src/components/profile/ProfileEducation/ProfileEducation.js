@@ -7,7 +7,7 @@ const ProfileEducation = ({profile}) => {
     return (
         <div className="profile-education h-100">
             <Jumbotron className="h-100">
-                <p className="f3 fw5">{profile.name.trim().split(' ')[0]}'s Education</p>
+                <p className="f3 fw5 text-primary">{profile.name.trim().split(' ')[0]}'s Education</p>
                 {profile.education && profile.education.length > 0 ? (
                     <div>
                         {
