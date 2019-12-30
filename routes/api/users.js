@@ -3,6 +3,7 @@ const {check, validationResult} = require('express-validator');
 const router = express.Router(); 
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
+const Post = require('../../models/Post');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const config = require('config');
@@ -114,7 +115,7 @@ router.get('/me', tokenauth, async (req, res) => {
 router.delete('/', tokenauth, async (req, res) => {
     try {
         // delete the user's posts 
-        // TODO
+        await Post.deleteMany({user: req.user.id});
 
         // delete the user's profile 
         await Profile.findOneAndRemove({user: req.user.id});
