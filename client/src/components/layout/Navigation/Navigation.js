@@ -16,6 +16,11 @@ const Navigation = ({auth: {isAuthenticated, loading}, logout, history}) => {
                         Coders
                     </span>
                 </Nav.Link>
+                <Nav.Link href="/posts" className="text-white">
+                    <span className="blue-hover">
+                        Posts
+                    </span>
+                </Nav.Link>
                 <Nav.Link href="/dashboard" className="text-white">
                     <span className="blue-hover">
                         Dashboard

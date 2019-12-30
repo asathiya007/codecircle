@@ -5,6 +5,7 @@ const tokenauth = (req, res, next) => {
     try {
         // check if token exists 
         const token = req.header('x-auth-token');
+        console.log(token);
         if (!token) {
             return res.status(400).json({
                 errors: [
