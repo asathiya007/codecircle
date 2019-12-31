@@ -15,6 +15,10 @@ html, body {
   cursor: pointer; 
 }
 
+.w-12 {
+  width: 12%; 
+}
+
 .landing {
   position: relative;
   background: url('./img/landing.jpg') no-repeat center center/cover;
@@ -113,4 +117,13 @@ html, body {
 
 .profile-github .repo {
   display: flex;
+}
+
+  
+#fileInput {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
 }

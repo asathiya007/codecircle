@@ -28,12 +28,11 @@ const Posts = ({loadUser, getPosts, post}) => {
                     {
                         post.posts.length > 0 ? (
                             post.posts.map(post => (
-                                // <PostItem key={post._id} post={post} />
-                                <div></div>
+                                <PostItem key={post._id} post={post} />
                             ))
                         ) : (
                             <p className="f4 fw4">
-                                No posts yet, want to make the first post? 
+                                No posts yet, care to make the first post? 
                             </p>
                         )
                     }
