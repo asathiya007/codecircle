@@ -4,28 +4,30 @@ import {connect} from 'react-redux';
 import {getPosts} from '../../../actions/post';
 import {loadUser} from '../../../actions/auth';
 import Spinner from '../../../components/layout/Spinner/Spinner';
+import PostForm from '../PostForm/PostForm';
 
-const Posts = ({loadUser, getPosts, post: {loading, posts}}) => {
+const Posts = ({loadUser, getPosts, post}) => {
     useEffect(() => {
         loadUser(); 
         getPosts(); 
     }, [getPosts, loadUser]); 
 
-    return loading || !posts ? <Spinner /> : (
+    return post.loading || !post.posts ? <Spinner /> : (
         <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
                     Posts
                 </p>
                 <p className="f3 fw4">
-                    <i class="fas fa-globe-americas"></i>
+                    <i className="fas fa-globe-americas"></i>
                     {' '}Chat with the CodeCircle community!
                 </p>
-                {/* <PostForm /> */}
+                <PostForm />
+                <hr/>
                 <div>
                     {
-                        posts.length > 0 ? (
-                            posts.map(post => (
+                        post.posts.length > 0 ? (
+                            post.posts.map(post => (
                                 // <PostItem key={post._id} post={post} />
                                 <div></div>
                             ))
@@ -44,8 +46,7 @@ const Posts = ({loadUser, getPosts, post: {loading, posts}}) => {
 Posts.propTypes = {
     getPosts: PropTypes.func.isRequired, 
     loadUser: PropTypes.func.isRequired, 
-    posts: PropTypes.array.isRequired, 
-    loading: PropTypes.bool.isRequired
+    post: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
