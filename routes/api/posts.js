@@ -49,6 +49,13 @@ router.get('/:id', tokenauth, async(req, res) => {
 // @access  private 
 router.post('/', tokenauth, async (req, res) => {
     try {
+        // check if no text and no file data are present 
+        if ((!req.body.text || req.body.text === '') && (!req.body.fileData || req.body.fileData === {})) {
+            return res.status(400).json({errors: [
+                'Please provide text or an image to make a post'
+            ]}); 
+        }
+
         // get user name and avatar, if the user exists 
         const user = await User.findById(req.user.id);
         if (!user) {
@@ -499,5 +506,56 @@ router.put('/comment/laugh/:id/:comment_id', tokenauth, async (req, res) => {
         });
     }
 });
+
+// @route   POST /api/posts/comment/:id
+// @desc    comment on a post 
+// @access  private 
+router.post('/comment/:id', tokenauth, async (req, res) => {
+    try {
+        // find the user and post, if they exist 
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            return res.status(404).json({
+                errors: [
+                    {msg: 'User data not found, cannot comment on post'}
+                ]
+            })
+        }
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({
+                errors: [
+                    {msg: 'Post to comment on not found, cannot comment on post'}
+                ]
+            })
+        }
+
+        // add comment to post, save post 
+        const comment = {
+            user: req.user.id, 
+            name: user.name, 
+            avatar: user.avatar, 
+            text: req.body.text, 
+            file: req.body.fileData
+        }
+        post.comments.unshift(comment);
+        await post.save(); 
+
+        // send post comments data to client 
+        res.json(post.comments);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                {msg: 'Server error - unable to comment on post'}
+            ]
+        })
+    }
+}); 
+
+// @route   DELETE /api/posts/comment/:id/:comment_id
+// @desc    delete a comment on a post 
+// @access  private 
+
 
 module.exports = router; 

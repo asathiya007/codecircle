@@ -22,13 +22,12 @@ export default function(state = initialState, action) {
                 ...state, 
                 posts: payload, 
                 post: null, 
+                error: {},
                 loading: false 
             }
         case POST_ERROR: 
             return {
                 ...state, 
-                posts: [],
-                post: null, 
                 error: payload, 
                 loading: false
             }
@@ -36,12 +35,14 @@ export default function(state = initialState, action) {
             return {
                 ...state, 
                 posts: [payload, ...state.posts], 
+                error: {}, 
                 loading: false
             }
         case DELETE_POST: 
             return {
                 ...state,
                 posts: state.posts.filter(post => post._id !== payload), 
+                error: {}, 
                 loading: false
             }
         case UPDATE_REACTS:
@@ -57,6 +58,7 @@ export default function(state = initialState, action) {
                     .map(post => post._id === payload.postId ? {
                         ...post, laughs: payload.laughs
                     } : post),
+                error: {},
                 loading: false
             }
         default: 

@@ -6,8 +6,9 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import {setAlert} from '../../../actions/alert';
 
-const PostForm = ({auth, addPost}) => {
+const PostForm = ({auth, addPost, setAlert}) => {
     const [text, setText] = useState('');
 
     // randomized greeting 
@@ -25,11 +26,6 @@ const PostForm = ({auth, addPost}) => {
         
         // get value of file input 
         const file = document.querySelector('#fileInput').files; 
-        
-        // stop submit action if empty text and no file is provided 
-        if (!file && text === '') {
-            return; 
-        }
 
         // if user provided file, upload file to server and get file data
         let fileData = null; 
@@ -42,6 +38,12 @@ const PostForm = ({auth, addPost}) => {
                 }
             }); 
             fileData = res.data; 
+        }
+
+        // stop submit action if empty text and no file is provided 
+        if ((!fileData || fileData === {}) && (!text || text === '')) {
+            setAlert('Please provide text and/or an image to post', 'danger');
+            return;
         }
 
         // add post and reset input fields 
@@ -78,11 +80,12 @@ const PostForm = ({auth, addPost}) => {
 
 PostForm.propTypes = {
     addPost: PropTypes.func.isRequired, 
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired, 
+    setAlert: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth 
 }); 
 
-export default connect(mapStateToProps, {addPost})(PostForm); 
+export default connect(mapStateToProps, {addPost, setAlert})(PostForm); 
