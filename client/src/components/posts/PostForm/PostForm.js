@@ -64,7 +64,7 @@ const PostForm = ({auth, addPost}) => {
                         <Form.Control type="text" as="textarea" name="text" placeholder={greeting} value={text} onChange={e => setText(e.target.value)}/>
                     </Form.Group>
                     <label htmlFor="fileInput" className="btn btn-secondary mb0 mr3">
-                        Upload Image <i className="fas fa-image"></i>
+                        <i className="fas fa-image"></i> Upload Image 
                     </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary"/>
                     <Button variant="primary" className="mh3" type="submit">

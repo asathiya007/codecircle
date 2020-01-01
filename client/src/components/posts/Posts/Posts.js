@@ -5,6 +5,7 @@ import {getPosts} from '../../../actions/post';
 import {loadUser} from '../../../actions/auth';
 import Spinner from '../../../components/layout/Spinner/Spinner';
 import PostForm from '../PostForm/PostForm';
+import PostItem from '../PostItem/PostItem';
 
 const Posts = ({loadUser, getPosts, post}) => {
     useEffect(() => {
