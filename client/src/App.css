@@ -138,20 +138,15 @@ html, body {
   text-align: center;
 }
 
-.post img {
-  width: 100px;
+.p-hover {
+  cursor: pointer;
 }
 
-.post .comment-count {
-  background: var(--light-color);
-  color: var(--primary-color);
-  padding: 0.1rem 0.2rem;
-  border-radius: 5px;
-  font-size: 0.8rem;
-}
-
-.post .post-date {
-  color: #aaa;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
+.hr-dark {
+  display: block; 
+  height: 1px;
+  border: 0; 
+  border-top: 1px solid #A9A9A9;
+  margin: 1em 0; 
+  padding: 0;
 }

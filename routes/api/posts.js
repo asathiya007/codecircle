@@ -136,11 +136,13 @@ router.put('/like/:id', tokenauth, async (req, res) => {
 
         // unlove and unlaugh at the post 
         const newLoves = post.loves.filter(love => love.user.toString() !== req.user.id); 
+        post.loves = newLoves; 
         const newLaughs = post.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        post.laughs = newLaughs; 
 
         // save the post and return the new likes, loves and laughs
         await post.save(); 
-        res.json({likes: newLikes, loves: newLoves, laughs: newLaughs}); 
+        res.json({ likes: post.likes, loves: post.loves, laughs: post.laughs}); 
     } catch (error) {
         console.error(error.message);
         res.status(500).json({errors: [
@@ -176,11 +178,13 @@ router.put('/love/:id', tokenauth, async (req, res) => {
 
         // unlike and unlaugh at the post 
         const newLikes = post.likes.filter(like => like.user.toString() !== req.user.id);
+        post.likes = newLikes; 
         const newLaughs = post.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        post.laughs = newLaughs; 
 
         // save the post and return the new likes, loves and laughs
         await post.save();
-        res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs });
+        res.json({ likes: post.likes, loves: post.loves, laughs: post.laughs });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({
@@ -218,11 +222,13 @@ router.put('/laugh/:id', tokenauth, async (req, res) => {
 
         // unlike and unlove the post 
         const newLikes = post.likes.filter(like => like.user.toString() !== req.user.id);
+        post.likes = newLikes; 
         const newLoves = post.loves.filter(love => love.user.toString() !== req.user.id);
+        post.loves = newLoves; 
 
         // save the post and return the new likes, loves and laughs
         await post.save();
-        res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs });
+        res.json({ likes: post.likes, loves: post.loves, laughs: post.laughs });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({

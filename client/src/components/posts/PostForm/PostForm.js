@@ -67,7 +67,7 @@ const PostForm = ({auth, addPost}) => {
                         <i className="fas fa-image"></i> Upload Image 
                     </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary"/>
-                    <Button variant="primary" className="mh3" type="submit">
+                    <Button variant="primary" className="mh1" type="submit">
                         Post
                     </Button>
                 </Form>
