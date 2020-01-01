@@ -382,7 +382,7 @@ router.put('/comment/like/:id/:comment_id', tokenauth, async (req, res) => {
             });
         }
         
-        // obtain new likes 
+        // get filtered likes 
         const newLikes = comment.likes.filter(like => like.user.toString() !== req.user.id);
 
         // if the post has not been liked, like it, else unlike it
@@ -396,7 +396,7 @@ router.put('/comment/like/:id/:comment_id', tokenauth, async (req, res) => {
         const newLoves = comments.loves.filter(love => love.user.toString() !== req.user.id);
         const newLaughs = comments.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
 
-        // save the post and return the new likes, loves and laughs
+        // save the post and send new likes, loves, and laughs data to client
         await post.save();
         res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs }); 
     } catch (error) {
@@ -430,7 +430,7 @@ router.put('/comment/love/:id/:comment_id', tokenauth, async (req, res) => {
             });
         }
 
-        // obtain new loves 
+        // get filtered loves 
         const newLoves = comment.loves.filter(love => love.user.toString() !== req.user.id);
 
         // if the post has not been loved, like it, else unlove it
@@ -444,7 +444,7 @@ router.put('/comment/love/:id/:comment_id', tokenauth, async (req, res) => {
         const newLikes = comments.likes.filter(like => like.user.toString() !== req.user.id);
         const newLaughs = comments.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
 
-        // save the post and return the new likes, loves and laughs
+        // save the post and send new likes, loves, and laughs data to client
         await post.save();
         res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs });
     } catch (error) {
@@ -480,7 +480,7 @@ router.put('/comment/laugh/:id/:comment_id', tokenauth, async (req, res) => {
             });
         }
 
-        // obtain new laughs 
+        // get filtered laughs 
         const newLaughs = comment.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
 
         // if the post has not been laughed at, laugh at it, else unlaugh at it
@@ -494,7 +494,7 @@ router.put('/comment/laugh/:id/:comment_id', tokenauth, async (req, res) => {
         const newLikes = comments.likes.filter(like => like.user.toString() !== req.user.id);
         const newLoves = comments.loves.filter(love => love.user.toString() !== req.user.id);
 
-        // save the post and return the new likes, loves and laughs
+        // save the post and send new likes, loves, and laughs data to client
         await post.save();
         res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs });
     } catch (error) {
@@ -556,6 +556,209 @@ router.post('/comment/:id', tokenauth, async (req, res) => {
 // @route   DELETE /api/posts/comment/:id/:comment_id
 // @desc    delete a comment on a post 
 // @access  private 
+router.delete('/comment/:id/:comment_id', tokenauth, async (req, res) => {
+    try {
+        // find post and comment to delete, if they exist 
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            res.status(404).json({
+                errors: [
+                    {msg: 'Post to delete not found, cannot delete comment'}
+                ]
+            }); 
+        }
+        const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id); 
+        if (!comment) {
+            res.status(404).json({
+                errors: [
+                    {msg: 'Comment to delete not found, cannot delete comment'}
+                ]
+            }); 
+        }
 
+        // check if user is authorized to delete comment 
+        if (comment.user.toString() !== req.user.id) {
+            return res.status(400).json({
+                errors: [
+                    {msg: 'User not authorized, cannot delete comment'}
+                ]
+            }); 
+        }
+
+        // remove file associated with comment, if it exists 
+        const file = await File.findById(comment.file);
+        if (file) {
+            await file.remove(); 
+        }
+        
+        // remove comment itself 
+        const comments = comments.filter(comment => comment._id.toString() !== req.params.comment_id);
+        post.comments = comments; 
+        res.json(post.comments);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                {msg: 'Server error - unable to delete comment'}
+            ]
+        }); 
+    }
+}); 
+
+// @route   PUT /api/posts/comment/like/:id/:comment_id
+// @desc    like a comment of a post 
+// @access  private 
+router.put('/comment/like/:id/:comment_id', tokenauth, async (req, res) => {
+    try {
+        // get post and comment to comment on, if they exist
+        const post = await Post.findById(req.params.id); 
+        if (!post) {
+            return res.status(404).json({
+                errors: [
+                    {msg: 'Post of comment to like not found, cannot like comment'}
+                ]
+            }); 
+        }
+        const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id);
+        if (!comment) {
+            return res.status(404).json({
+                errors: [
+                    {msg: 'Comment to like not found, cannot like comment'}
+                ]
+            }); 
+        }
+
+        // get filtered likes 
+        const newLikes = comment.likes.filter(like => like.user.toString() !== req.user.id);
+
+        // if the post has not been liked, like it, else unlike it 
+        if (comment.likes.length === newLikes.length) {
+            comment.likes.unshift({user: req.user.id});
+        } else {
+            comment.likes = newLikes; 
+        }
+
+        // unlove and unlaugh at the comment 
+        const newLoves = comment.loves.filter(love => love.user.toString() !== req.user.id);
+        comment.loves = newLoves; 
+        const newLaughs = comment.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        comment.laughs = newLaughs; 
+
+        // save the post and send new likes, loves, and laughs data to client 
+        await post.save();
+        res.json({likes: comment.likes, loves: comment.loves, laughs: comment.laughs}); 
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                {msg: 'Server error - unable to like comment'}
+            ]
+        }); 
+    }
+}); 
+
+// @route   PUT /api/posts/comment/love/:id/:comment_id
+// @desc    love a comment of a post 
+// @access  private 
+router.put('/comment/love/:id/:comment_id', tokenauth, async (req, res) => {
+    try {
+        // get post and comment to comment on, if they exist
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({
+                errors: [
+                    { msg: 'Post of comment to love not found, cannot love comment' }
+                ]
+            });
+        }
+        const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id);
+        if (!comment) {
+            return res.status(404).json({
+                errors: [
+                    { msg: 'Comment to love not found, cannot love comment' }
+                ]
+            });
+        }
+
+        // get filtered loves 
+        const newLoves = comment.loves.filter(love => love.user.toString() !== req.user.id);
+
+        // if the post has not been loved, like it, else unlove it 
+        if (comment.loves.length === newLoves.length) {
+            comment.loves.unshift({ user: req.user.id });
+        } else {
+            comment.loves = newLoves;
+        }
+
+        // unlike and unlaugh at the comment 
+        const newLikes = comment.likes.filter(like => like.user.toString() !== req.user.id);
+        comment.likes = newLikes;
+        const newLaughs = comment.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        comment.laughs = newLaughs;
+
+        // save the post and send new likes, loves, and laughs data to client 
+        await post.save();
+        res.json({ likes: comment.likes, loves: comment.loves, laughs: comment.laughs });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to love comment' }
+            ]
+        });
+    }
+}); 
+
+// @route   PUT /api/posts/comment/laugh/:id/:comment_id
+// @desc    laugh at a comment of a post 
+// @access  private 
+router.put('/comment/laugh/:id/:comment_id', tokenauth, async (req, res) => {
+    try {
+        // get post and comment to comment on, if they exist
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({
+                errors: [
+                    { msg: 'Post of comment to laugh at not found, cannot laugh at comment' }
+                ]
+            });
+        }
+        const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id);
+        if (!comment) {
+            return res.status(404).json({
+                errors: [
+                    { msg: 'Comment to laugh at not found, cannot laugh at comment' }
+                ]
+            });
+        }
+
+        // get filtered laughs
+        const newLaughs = comment.laughs.filter(laughs => laughs.user.toString() !== req.user.id);
+
+        // if the post has not been loved, like it, else unlove it 
+        if (comment.laughs.length === newLaughs.length) {
+            comment.laughs.unshift({ user: req.user.id });
+        } else {
+            comment.laughs = newLaughs;
+        }
+
+        // unlike and unlove the comment 
+        const newLikes = comment.likes.filter(like => like.user.toString() !== req.user.id);
+        comment.likes = newLikes;
+        const newLoves = comment.loves.filter(love => love.user.toString() !== req.user.id);
+        comment.loves = newLoves;
+
+        // save the post and send new likes, loves, and laughs data to client 
+        await post.save();
+        res.json({ likes: comment.likes, loves: comment.loves, laughs: comment.laughs });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to laugh at comment' }
+            ]
+        });
+    }
+}); 
 
 module.exports = router; 
