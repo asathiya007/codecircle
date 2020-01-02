@@ -19,6 +19,7 @@ import Profiles from './components/profiles/Profiles/Profiles';
 import Profile from './components/profile/Profile/Profile';
 import Posts from './components/posts/Posts/Posts';
 import Post from './components/post/Post/Post';
+import NotFound from './components/layout/NotFound/NotFound';
 
 function App() {
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
             <PrivateRoute exact path="/add-experience" component={AddExperience} />
             <PrivateRoute exact path="/posts" component={Posts} />
             <PrivateRoute exact path="/posts/:id" component={Post} />
+            <Route component={NotFound}/>
           </Switch>
         </Fragment>
       </Router>
