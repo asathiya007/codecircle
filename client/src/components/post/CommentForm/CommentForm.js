@@ -65,12 +65,15 @@ const CommentForm = ({ post, auth, addComment, setAlert }) => {
                     <Form.Group controlId="formBasicText">
                         <Form.Control type="text" as="textarea" name="text" placeholder={greeting} value={text} onChange={e => setText(e.target.value)} />
                     </Form.Group>
-                    <label htmlFor="fileInput" className="btn btn-secondary mb0 mr3">
+                    <label htmlFor="fileInput" className="btn btn-secondary mb0 mr1">
                         <i className="fas fa-image"></i> Upload Image
-                    </label>
+                        </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary" />
                     <Button variant="primary" className="mh1" type="submit">
                         Comment
+                    </Button>
+                    <Button variant="secondary" className="mh1" href="/posts">
+                        Back to Posts
                     </Button>
                 </Form>
             </div>
