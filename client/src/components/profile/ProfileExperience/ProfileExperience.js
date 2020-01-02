@@ -12,7 +12,7 @@ const ProfileExperience = ({ profile }) => {
                     <div>
                         {
                             profile.experience.map(exp => (
-                                <div key={exp._id}>
+                                <div key={exp._id} className="mb3">
                                     <p className="f4 fw5 mv0 pv0">{exp.company}</p>
                                     <p className="mv0 pv0">
                                         <span className="fw5">Duration: </span>

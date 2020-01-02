@@ -12,7 +12,7 @@ const ProfileEducation = ({profile}) => {
                     <div>
                         {
                             profile.education.map(edu => (
-                                <div key={edu._id}>
+                                <div key={edu._id} className="mb3">
                                     <p className="f4 fw5 mv0 pv0">{edu.institution}</p>
                                     <p className="mv0 pv0">
                                         <span className="fw5">Duration: </span>

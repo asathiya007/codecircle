@@ -124,6 +124,9 @@ export const deleteUser = () => async dispatch => {
             dispatch({
                 type: DELETE_ACCOUNT
             });
+
+            // alert user that account has been deleted 
+            dispatch(setAlert('User account permanently deleted', 'success')); 
         }
     } catch (error) {
         // create an alert for each error 
