@@ -23,7 +23,7 @@ const Post = ({match, getPost, loadUser, post}) => {
                     <i className="fas fa-comments"></i>
                     {' '}Leave your remarks on {post.post.name.trim().split(' ')[0]}'s post!
                 </p>
-                <PostItem post={post.post}/>
+                <PostItem post={post.post} showComment={false}/>
                 <CommentForm post={post.post}/>
                 <hr/>
             </div>
