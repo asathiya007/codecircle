@@ -1,11 +1,13 @@
 import axios from 'axios';
 import {setAlert} from './alert';
 import {
-    GET_POSTS, 
+    GET_POSTS,
+    GET_POST, 
     POST_ERROR, 
     ADD_POST,
     UPDATE_REACTS,
-    DELETE_POST
+    DELETE_POST,
+    ADD_COMMENT
 } from './types';
 
 export const getPosts = () => async dispatch => {
@@ -29,6 +31,25 @@ export const getPosts = () => async dispatch => {
     }
 }
 
+export const getPost = id => async dispatch => {
+    try {
+        // get post data
+        const res = await axios.get(`/api/posts/${id}`); 
+
+        // send post data to the store (post)
+        dispatch({
+            type: GET_POST, 
+            payload: res.data
+        }); 
+    } catch (error) {
+        // send error data to the store (post)
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'Error in getting post data' }
+        }); 
+    }
+}
+
 export const addPost = (formData) => async dispatch => {
     try {
         // add a post 
@@ -48,7 +69,7 @@ export const addPost = (formData) => async dispatch => {
         // alert the user of added post 
         dispatch(setAlert('Added post', 'success')); 
     } catch (error) {
-        // send error data to the store 
+        // send error data to the store (post)
         dispatch({
             type: POST_ERROR, 
             payload: {msg: 'Error in adding new post'}
@@ -146,6 +167,32 @@ export const deletePost = (postId) => async dispatch => {
         dispatch({
             type: POST_ERROR, 
             payload: {msg: 'Error in deleting post'}
+        }); 
+    }
+}
+
+export const addComment = (postId, formData) => async dispatch => {
+    try {
+        // add comment
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const res = await axios.post(`/api/posts/comment/${postId}`, formData, config);
+
+        // send comment data to store (post)
+        dispatch({
+            type: ADD_COMMENT, 
+            payload: {postId, comments: res.data} 
+        }); 
+
+        // alert user that comment has been added 
+        dispatch(setAlert('Added comment to post', 'success'));
+    } catch (error) {
+        dispatch({
+            type: POST_ERROR,
+            payload: {msg: 'Error in adding comment to post'}
         }); 
     }
 }

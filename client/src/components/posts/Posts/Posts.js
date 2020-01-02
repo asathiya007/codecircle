@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'; 
+import React from 'react'; 
 import PropTypes from 'prop-types'; 
 import {connect} from 'react-redux';
 import {getPosts} from '../../../actions/post';
@@ -7,12 +7,9 @@ import Spinner from '../../../components/layout/Spinner/Spinner';
 import PostForm from '../PostForm/PostForm';
 import PostItem from '../PostItem/PostItem';
 
-const Posts = ({loadUser, getPosts, post}) => {
-    useEffect(() => {
-        loadUser(); 
-        getPosts(); 
-    }, [getPosts, loadUser]); 
-
+const Posts = ({loadUser, getPosts, post}) => { 
+    loadUser();
+    getPosts(); 
     return post.loading || !post.posts ? <Spinner /> : (
         <div className="h-center top-space bottom-space">
             <div className="w-60">

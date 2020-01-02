@@ -1,7 +1,13 @@
-import React, {Fragment} from 'react';
+import React, {useEffect, Fragment} from 'react';
 import SpinnerGIF from './Spinner.gif';
+import {connect} from 'react-redux';
+import {clearAlerts} from '../../../actions/alert';
 
-const Spinner = () => {
+const Spinner = ({clearAlerts}) => {
+    useEffect(() => {
+        clearAlerts();
+    }, [clearAlerts]); 
+
     return (
         <Fragment>
             <img 
@@ -18,4 +24,4 @@ const Spinner = () => {
     )
 }
 
-export default Spinner
+export default connect(null, {clearAlerts})(Spinner);

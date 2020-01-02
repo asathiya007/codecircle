@@ -3,7 +3,9 @@ import {
     POST_ERROR, 
     ADD_POST, 
     DELETE_POST,
-    UPDATE_REACTS
+    UPDATE_REACTS, 
+    GET_POST, 
+    ADD_COMMENT
 } from '../actions/types';
 
 const initialState = {
@@ -24,6 +26,13 @@ export default function(state = initialState, action) {
                 post: null, 
                 error: {},
                 loading: false 
+            }
+        case GET_POST: 
+            return {
+                ...state, 
+                post: payload, 
+                error: {},
+                loading: false
             }
         case POST_ERROR: 
             return {
@@ -58,6 +67,24 @@ export default function(state = initialState, action) {
                     .map(post => post._id === payload.postId ? {
                         ...post, laughs: payload.laughs
                     } : post),
+                post: state.post && state.post._id === payload.postId ? {
+                    ...state.post, 
+                    likes: payload.likes, 
+                    loves: payload.loves, 
+                    laughs: payload.laughs
+                } : state.post, 
+                error: {},
+                loading: false
+            }
+        case ADD_COMMENT:
+            return {
+                ...state, 
+                posts: state.posts.map(post => post._id === payload.postId ? {
+                    ...post, comments: payload.comments
+                } : post), 
+                post: state.post && state.post._id === payload.postId ? {
+                    ...state.post, comments: payload.comments
+                } : state.post, 
                 error: {},
                 loading: false
             }
