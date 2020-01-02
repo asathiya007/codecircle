@@ -7,7 +7,9 @@ import {
     ADD_POST,
     UPDATE_REACTS,
     DELETE_POST,
-    ADD_COMMENT
+    ADD_COMMENT, 
+    DELETE_COMMENT,
+    UPDATE_COMMENT_REACTS
 } from './types';
 
 export const getPosts = () => async dispatch => {
@@ -190,9 +192,107 @@ export const addComment = (postId, formData) => async dispatch => {
         // alert user that comment has been added 
         dispatch(setAlert('Added comment to post', 'success'));
     } catch (error) {
+        // send error data to store (post)
         dispatch({
             type: POST_ERROR,
             payload: {msg: 'Error in adding comment to post'}
         }); 
+    }
+}
+
+export const deleteComment = (postId, commentId) => async dispatch => {
+    try {
+        // delete the comment 
+        const res = await axios.delete(`/api/posts/comment/${postId}/${commentId}`); 
+
+        // send updated comments data and post id to store (post)
+        dispatch({
+            type: DELETE_COMMENT, 
+            payload: {postId, comments: res.data}
+        }); 
+
+        // alert the user that a comment has been deleted
+        dispatch(setAlert('Deleted comment from post', 'success'));
+    } catch (error) {
+        // send error data to store (post)
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'Error in adding comment to post' }
+        });
+    }
+}
+
+export const likeComment = (postId, commentId) => async dispatch => {
+    try {
+        // like the comment 
+        const res = await axios.put(`/api/posts/comment/like/${postId}/${commentId}`); 
+
+        // send updated comment data to store (post)
+        dispatch({
+            type: UPDATE_COMMENT_REACTS,
+            payload: {
+                postId, 
+                commentId,
+                likes: res.data.likes, 
+                loves: res.data.loves, 
+                laughs: res.data.laughs
+            }
+        }); 
+    } catch (error) {
+        // send error data to store (post)
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'Error in liking comment' }
+        });
+    }
+}
+
+export const loveComment = (postId, commentId) => async dispatch => {
+    try {
+        // love the comment 
+        const res = await axios.put(`/api/posts/comment/love/${postId}/${commentId}`);
+
+        // send updated comment data to store (post)
+        dispatch({
+            type: UPDATE_COMMENT_REACTS,
+            payload: {
+                postId,
+                commentId,
+                likes: res.data.likes,
+                loves: res.data.loves,
+                laughs: res.data.laughs
+            }
+        });
+    } catch (error) {
+        // send error data to store (post)
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'Error in loving comment' }
+        });
+    }
+}
+
+export const laughComment = (postId, commentId) => async dispatch => {
+    try {
+        // laugh at the comment 
+        const res = await axios.put(`/api/posts/comment/laugh/${postId}/${commentId}`);
+
+        // send updated comment data to store (post)
+        dispatch({
+            type: UPDATE_COMMENT_REACTS,
+            payload: {
+                postId,
+                commentId,
+                likes: res.data.likes,
+                loves: res.data.loves,
+                laughs: res.data.laughs
+            }
+        });
+    } catch (error) {
+        // send error data to store (post)
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'Error in laughing at comment' }
+        });
     }
 }

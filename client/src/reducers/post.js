@@ -5,7 +5,9 @@ import {
     DELETE_POST,
     UPDATE_REACTS, 
     GET_POST, 
-    ADD_COMMENT
+    ADD_COMMENT, 
+    DELETE_COMMENT,
+    UPDATE_COMMENT_REACTS
 } from '../actions/types';
 
 const initialState = {
@@ -84,6 +86,35 @@ export default function(state = initialState, action) {
                 } : post), 
                 post: state.post && state.post._id === payload.postId ? {
                     ...state.post, comments: payload.comments
+                } : state.post, 
+                error: {},
+                loading: false
+            }
+        case DELETE_COMMENT: {
+            return {
+                ...state, 
+                posts: state.posts.map(post => post._id === payload.postId ? {
+                    ...post, comments: payload.comments
+                } : post), 
+                post: state.post && state.post._id === payload.postId ? {
+                    ...state.post, comments: payload.comments
+                } : state.post, 
+                error: {},
+                loading: false
+            }
+        }
+        case UPDATE_COMMENT_REACTS: 
+            return {
+                ...state, 
+                posts: state.posts.map(post => post._id === payload.postId ? {
+                    ...post, comments: post.comments.map(comment => comment._id === payload.commentId ? {
+                        ...comment, likes: payload.likes, loves: payload.loves, laughs: payload.laughs
+                    } : comment)
+                } : post), 
+                post: state.post && state.post._id === payload.postId ? {
+                    ...state.post, comments: state.post.comments.map(comment => comment._id === payload.commentId ? {
+                        ...comment, likes: payload.likes, loves: payload.loves, laughs: payload.laughs
+                    } : comment)
                 } : state.post, 
                 error: {},
                 loading: false

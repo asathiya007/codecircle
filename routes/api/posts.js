@@ -373,6 +373,7 @@ router.put('/comment/like/:id/:comment_id', tokenauth, async (req, res) => {
                 ]
             });
         }
+
         const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id);
         if (!comment) {
             return res.status(404).json({
@@ -393,12 +394,14 @@ router.put('/comment/like/:id/:comment_id', tokenauth, async (req, res) => {
         }
 
         // unlove and unlaugh at the post 
-        const newLoves = comments.loves.filter(love => love.user.toString() !== req.user.id);
-        const newLaughs = comments.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        const newLoves = comment.loves.filter(love => love.user.toString() !== req.user.id);
+        comment.loves = newLoves; 
+        const newLaughs = comment.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        comment.laughs = newLaughs; 
 
         // save the post and send new likes, loves, and laughs data to client
         await post.save();
-        res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs }); 
+        res.json({ likes: comment.likes, loves: comment.loves, laughs: comment.laughs }); 
     } catch (error) {
         console.error(error.message);
         res.status(500).json({errors: [
@@ -441,12 +444,14 @@ router.put('/comment/love/:id/:comment_id', tokenauth, async (req, res) => {
         }
 
         // unlike and unlaugh at the post 
-        const newLikes = comments.likes.filter(like => like.user.toString() !== req.user.id);
-        const newLaughs = comments.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        const newLikes = comment.likes.filter(like => like.user.toString() !== req.user.id);
+        comment.likes = newLikes; 
+        const newLaughs = comment.laughs.filter(laugh => laugh.user.toString() !== req.user.id);
+        comment.laughs = newLaughs; 
 
         // save the post and send new likes, loves, and laughs data to client
         await post.save();
-        res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs });
+        res.json({ likes: comment.likes, loves: comment.loves, laughs: comment.laughs });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({
@@ -491,12 +496,14 @@ router.put('/comment/laugh/:id/:comment_id', tokenauth, async (req, res) => {
         }
 
         // unlike and unlove the post 
-        const newLikes = comments.likes.filter(like => like.user.toString() !== req.user.id);
-        const newLoves = comments.loves.filter(love => love.user.toString() !== req.user.id);
+        const newLikes = comment.likes.filter(like => like.user.toString() !== req.user.id);
+        comment.likes = newLikes; 
+        const newLoves = comment.loves.filter(love => love.user.toString() !== req.user.id);
+        comment.loves = newLoves; 
 
         // save the post and send new likes, loves, and laughs data to client
         await post.save();
-        res.json({ likes: newLikes, loves: newLoves, laughs: newLaughs });
+        res.json({ likes: comment.likes, loves: comment.loves, laughs: comment.laughs });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({
@@ -567,6 +574,7 @@ router.delete('/comment/:id/:comment_id', tokenauth, async (req, res) => {
                 ]
             }); 
         }
+
         const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id); 
         if (!comment) {
             res.status(404).json({

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'; 
+import React, {useEffect, Fragment} from 'react'; 
 import PropTypes from 'prop-types'; 
 import {connect} from 'react-redux';
 import {getPost} from '../../../actions/post';
@@ -6,6 +6,7 @@ import { loadUser } from '../../../actions/auth';
 import Spinner from '../../layout/Spinner/Spinner';
 import PostItem from '../../posts/PostItem/PostItem';
 import CommentForm from '../CommentForm/CommentForm';
+import CommentItem from '../CommentItem/CommentItem';
 
 const Post = ({match, getPost, loadUser, post}) => {
     useEffect(() => {
@@ -26,6 +27,18 @@ const Post = ({match, getPost, loadUser, post}) => {
                 <PostItem post={post.post} showComment={false}/>
                 <CommentForm post={post.post}/>
                 <hr/>
+                <Fragment>
+                    {
+                        post.post.comments.length > 0 ? (
+                            post.post.comments.map(comment => 
+                            <CommentItem key={comment._id} comment={comment} postId={post.post._id} />)
+                        ) : (
+                            <p className="f4 fw4">
+                                No comment yet, care to make the first comment?
+                            </p>
+                        )
+                    }
+                </Fragment>
             </div>
         </div>
     ); 

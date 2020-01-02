@@ -127,14 +127,14 @@ html, body {
   height: 1px;
 }
 
-.post {
+.post, .comment {
   display: grid;
   grid-template-columns: 1fr 4fr;
   grid-gap: 2rem;
   align-items: center;
 }
 
-.post > div:first-child {
+.post > div:first-child, .comment > div:first-child {
   text-align: center;
 }
 

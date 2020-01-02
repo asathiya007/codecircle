@@ -46,13 +46,13 @@ const PostItem = (
         <Jumbotron className="post">
             <div>
                 <Link to={`/profiles/${post.user}`}>
-                    <Image roundedCircle src={auth.user.avatar} className="w-70"/>
+                    <Image roundedCircle src={post.avatar} className="w-70"/>
                 </Link>
                 <p className="f4 fw4 text-primary mt1 mb0 p-hover" onClick={e => {
                     e.preventDefault();
                     history.push(`/profiles/${post.user}`); 
                 }}>
-                    {auth.user.name}
+                    {post.name}
                 </p>
                 <p className="f6 fw4">
                     <Moment format="YYYY/MM/DD">
@@ -118,13 +118,17 @@ const PostItem = (
                                     </Button>
                                 )
                             }
-                            <Button variant="danger" className="mh1" onClick={e => {
-                                e.preventDefault(); 
-                                deletePost(post._id); 
-                                history.push('/posts');
-                            }}>
-                                <i className="fas fa-times fa-2x"></i>
-                            </Button>
+                            {
+                                post.user === auth.user._id && (
+                                    <Button variant="danger" className="mh1" onClick={e => {
+                                        e.preventDefault();
+                                        deletePost(post._id);
+                                        history.push('/posts');
+                                    }}>
+                                        <i className="fas fa-times fa-2x"></i>
+                                    </Button>
+                                )
+                            }
                         </div>
                     )
                 }

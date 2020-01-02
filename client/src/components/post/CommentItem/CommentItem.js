@@ -12,7 +12,8 @@ import Button from 'react-bootstrap/Button';
 
 const CommentItem = (
     {
-        post,
+        comment,
+        postId,
         auth,
         likeComment,
         loveComment,
@@ -27,8 +28,8 @@ const CommentItem = (
 
     useEffect(() => {
         const processFile = async () => {
-            if (post.file) {
-                const res = await axios.get(`/api/posts/displayfile/${post.file}`);
+            if (comment.file) {
+                const res = await axios.get(`/api/posts/displayfile/${comment.file}`);
                 if (res.data.mimetype.toString().includes('image')) {
                     const { mimetype, data } = res.data;
                     const newData = new Buffer(data).toString('base64');
@@ -39,29 +40,29 @@ const CommentItem = (
         }
 
         processFile();
-    }, [post.file]);
+    }, [comment.file]);
 
-    return post.loading || auth.loading ? <Spinner /> : (
-        <Jumbotron className="post">
+    return auth.loading ? <Spinner /> : (
+        <Jumbotron className="comment">
             <div>
-                <Link to={`/profiles/${post.user}`}>
-                    <Image roundedCircle src={auth.user.avatar} className="w-70" />
+                <Link to={`/profiles/${comment.user}`}>
+                    <Image roundedCircle src={comment.avatar} className="w-70" />
                 </Link>
                 <p className="f4 fw4 text-primary mt1 mb0 p-hover" onClick={e => {
                     e.preventDefault();
-                    history.push(`/profiles/${post.user}`);
+                    history.push(`/profiles/${comment.user}`);
                 }}>
-                    {auth.user.name}
+                    {comment.name}
                 </p>
                 <p className="f6 fw4">
                     <Moment format="YYYY/MM/DD">
-                        {post.date}
+                        {comment.date}
                     </Moment>
                 </p>
             </div>
             <div>
                 <p className="f4 mb2">
-                    {post.text}
+                    {comment.text}
                 </p>
                 {
                     isImage && (
@@ -74,48 +75,40 @@ const CommentItem = (
                             <hr className="hr-dark" />
                             <Button variant="success" className="mr1" onClick={e => {
                                 e.preventDefault();
-                                likeComment(post._id);
+                                likeComment(postId, comment._id);
                             }}>
                                 <i className="fas fa-thumbs-up fa-2x"></i>
                                 {
-                                    post.likes.length > 0 && (
-                                        <span>{' ' + post.likes.length}</span>
+                                    comment.likes.length > 0 && (
+                                        <span>{' ' + comment.likes.length}</span>
                                     )
                                 }
                             </Button>
                             <Button variant="danger" className="mh1" onClick={e => {
                                 e.preventDefault();
-                                loveComment(post._id);
+                                loveComment(postId, comment._id);
                             }}>
                                 <i className="fas fa-heart fa-2x"></i>
                                 {
-                                    post.loves.length > 0 && (
-                                        <span>{' ' + post.loves.length}</span>
+                                    comment.loves.length > 0 && (
+                                        <span>{' ' + comment.loves.length}</span>
                                     )
                                 }
                             </Button>
                             <Button variant="warning" className="mh1" onClick={e => {
                                 e.preventDefault();
-                                laughComment(post._id);
+                                laughComment(postId, comment._id);
                             }}>
                                 <i className="fas fa-laugh-beam fa-2x text-white"></i>
                                 {
-                                    post.laughs.length > 0 && (
-                                        <span className="text-white">{' ' + post.laughs.length}</span>
-                                    )
-                                }
-                            </Button>
-                            <Button href={`/posts/${post._id}`} variant="primary" className="mh1">
-                                <i className="fas fa-comments fa-2x"></i>
-                                {
-                                    post.comments.length > 0 && (
-                                        <span>{' ' + post.comments.length}</span>
+                                    comment.laughs.length > 0 && (
+                                        <span className="text-white">{' ' + comment.laughs.length}</span>
                                     )
                                 }
                             </Button>
                             <Button variant="danger" className="mh1" onClick={e => {
                                 e.preventDefault();
-                                deleteComment(post._id);
+                                deleteComment(postId, comment._id);
                             }}>
                                 <i className="fas fa-times fa-2x"></i>
                             </Button>
@@ -127,21 +120,22 @@ const CommentItem = (
     )
 }
 
-PostItem.defaultProps = {
+CommentItem.defaultProps = {
     showActions: true
 }
 
-PostItem.propTypes = {
+CommentItem.propTypes = {
     auth: PropTypes.object.isRequired,
-    post: PropTypes.object.isRequired,
-    likePost: PropTypes.func.isRequired,
-    lovePost: PropTypes.func.isRequired,
-    laughPost: PropTypes.func.isRequired,
-    deletePost: PropTypes.func.isRequired
+    postId: PropTypes.string.isRequired,
+    comment: PropTypes.object.isRequired,
+    likeComment: PropTypes.func.isRequired,
+    loveComment: PropTypes.func.isRequired,
+    laughComment: PropTypes.func.isRequired,
+    deleteComment: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { likePost, lovePost, laughPost, deletePost })(withRouter(PostItem)); 
+export default connect(mapStateToProps, { likeComment, loveComment, laughComment, deleteComment })(withRouter(CommentItem)); 
