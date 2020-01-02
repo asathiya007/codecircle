@@ -1,0 +1,6 @@
+{
+    "mongoURI": "mongodb+srv://asathiya007:asathiya007@codecircle-zbirs.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtKey": "codecircle",
+    "githubClientId": "47945a422f6fa52189bf",
+    "githubSecret": "36078ce8020debf787c7dd0b29f4dcaeabbe35fa"
+}
