@@ -26,7 +26,8 @@ const CreateProfile = ({auth, buildProfile, history}) => {
         facebook: '',
         linkedin: '',
         youtube: '',
-        instagram: ''
+        instagram: '', 
+        pinterest: ''
     }); 
 
     const {
@@ -42,7 +43,8 @@ const CreateProfile = ({auth, buildProfile, history}) => {
         facebook,
         linkedin,
         youtube,
-        instagram
+        instagram, 
+        pinterest
     } = formData; 
 
     // only accept numbers as input for the user's phone number
@@ -166,6 +168,11 @@ const CreateProfile = ({auth, buildProfile, history}) => {
                                 <Form.Group controlId="formBasicLinkedIn">
                                     <Form.Label>LinkedIn</Form.Label>
                                     <Form.Control type="text" name="linkedin" placeholder="Link to your LinkedIn profile!" value={linkedin} onChange={onChange} />
+                                </Form.Group>
+
+                                <Form.Group controlId="formBasicPinterest">
+                                    <Form.Label>Pinterest</Form.Label>
+                                    <Form.Control type="text" name="pinterest" placeholder="Link to your Pinterest profile!" value={pinterest} onChange={onChange} />
                                 </Form.Group>
                            </Fragment>
                        )

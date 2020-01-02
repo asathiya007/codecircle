@@ -110,6 +110,9 @@ const ProfileSchema = new mongoose.Schema({
         },
         instagram: {
             type: String 
+        }, 
+        pinterest: {
+            type: String
         }
     }, 
     date: {

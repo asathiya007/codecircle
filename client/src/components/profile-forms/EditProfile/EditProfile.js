@@ -27,7 +27,8 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
         facebook: '',
         linkedin: '',
         youtube: '',
-        instagram: ''
+        instagram: '', 
+        pinterest: ''
     });
 
     const {
@@ -43,7 +44,8 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
         facebook,
         linkedin,
         youtube,
-        instagram
+        instagram, 
+        pinterest
     } = formData;
 
     const [fetchedProfileData, toggleFetchProfData] = useState(false);
@@ -68,7 +70,8 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
                 facebook: loading || !profile.social.facebook ? '' : profile.social.facebook,
                 linkedin: loading || !profile.social.linkedin ? '' : profile.social.linkedin,
                 youtube: loading || !profile.social.youtube ? '' : profile.social.youtube,
-                instagram: loading || !profile.social.instagram ? '' : profile.social.instagram
+                instagram: loading || !profile.social.instagram ? '' : profile.social.instagram, 
+                pinterest: loading || !profile.social.pinterest ? '' : profile.social.pinterest
             });
         }
     }, [profile, loading, fetchedProfileData, getProfile]); 
@@ -195,6 +198,11 @@ const EditProfile = ({ auth, profile: {profile, loading}, buildProfile, getProfi
                                 <Form.Group controlId="formBasicLinkedIn">
                                     <Form.Label>LinkedIn</Form.Label>
                                     <Form.Control type="text" name="linkedin" placeholder="Link to your LinkedIn profile!" value={linkedin} onChange={onChange} />
+                                </Form.Group>
+
+                                <Form.Group controlId="formBasicPinterest">
+                                    <Form.Label>Pinterest</Form.Label>
+                                    <Form.Control type="text" name="pinterest" placeholder="Link to your Pinterest profile!" value={pinterest} onChange={onChange} />
                                 </Form.Group>
                             </Fragment>
                         )

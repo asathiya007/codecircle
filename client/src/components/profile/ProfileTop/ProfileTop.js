@@ -81,6 +81,13 @@ const ProfileTop = ({profile}) => {
                         </a>
                     )
                 }
+                {
+                    profile.social.pinterest && (
+                        <a href={profile.social.pinterest} target="_blank" rel="noopener noreferrer" className="mh2">
+                            <i className="fab fa-pinterest fa-2x color-black"></i>
+                        </a>
+                    )
+                }
             </div>
         </Jumbotron>
     )

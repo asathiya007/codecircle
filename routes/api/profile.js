@@ -109,7 +109,8 @@ router.post('/',
                 facebook,
                 twitter,
                 instagram,
-                linkedin
+                linkedin, 
+                pinterest
             } = req.body; 
 
             // build profile object 
@@ -139,6 +140,7 @@ router.post('/',
             if (facebook || facebook === '') profileFields.social.facebook = facebook; 
             if (linkedin || linkedin === '') profileFields.social.linkedin = linkedin; 
             if (instagram || instagram === '') profileFields.social.instagram = instagram; 
+            if (pinterest || pinterest === '') profileFields.social.pinterest = pinterest; 
 
             // check if profile exists, update and send to client if it exists
             let profile = await Profile.findOne({user: req.user.id});
