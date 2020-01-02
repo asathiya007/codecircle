@@ -55,7 +55,7 @@ const PostItem = (
                     {post.name}
                 </p>
                 <p className="f6 fw4">
-                    <Moment format="YYYY/MM/DD">
+                    <Moment fromNow>
                         {post.date}
                     </Moment>
                 </p>
