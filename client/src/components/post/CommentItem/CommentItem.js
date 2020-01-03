@@ -25,6 +25,7 @@ const CommentItem = (
 ) => {
     const [fileData, setFileData] = useState({});
     const [isImage, toggleIsImage] = useState(false);
+    const [isVideo, toggleIsVideo] = useState(false);
 
     useEffect(() => {
         const processFile = async () => {
@@ -35,6 +36,11 @@ const CommentItem = (
                     const newData = new Buffer(data).toString('base64');
                     setFileData({ data: newData, mimetype });
                     toggleIsImage(true);
+                } else if (res.data.mimetype.toString().includes('video') || res.data.mimetype.toString().includes('mp4')) {
+                    const { mimetype, data } = res.data;
+                    const newData = new Buffer(data).toString('base64');
+                    setFileData({ data: newData, mimetype });
+                    toggleIsVideo(true);
                 }
             }
         }
@@ -66,14 +72,19 @@ const CommentItem = (
                 </p>
                 {
                     isImage && (
-                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-50" />
+                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" />
+                    )
+                }
+                {
+                    isVideo && (
+                        <video src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" autoPlay controls muted loop/>
                     )
                 }
                 {
                     showActions && (
                         <div className="mt2">
                             <hr className="hr-dark" />
-                            <Button variant="success" className="mr1" onClick={e => {
+                            <Button variant="success" className="mr1 button-margins" onClick={e => {
                                 e.preventDefault();
                                 likeComment(postId, comment._id);
                             }}>
@@ -84,7 +95,7 @@ const CommentItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="danger" className="mh1" onClick={e => {
+                            <Button variant="danger" className="mh1 button-margins" onClick={e => {
                                 e.preventDefault();
                                 loveComment(postId, comment._id);
                             }}>
@@ -95,7 +106,7 @@ const CommentItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="warning" className="mh1" onClick={e => {
+                            <Button variant="warning" className="mh1 button-margins" onClick={e => {
                                 e.preventDefault();
                                 laughComment(postId, comment._id);
                             }}>
@@ -106,12 +117,16 @@ const CommentItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="danger" className="mh1" onClick={e => {
-                                e.preventDefault();
-                                deleteComment(postId, comment._id);
-                            }}>
-                                <i className="fas fa-times fa-2x"></i>
-                            </Button>
+                            {
+                                comment.user === auth.user._id && (
+                                    <Button variant="danger" className="mh1 button-margins" onClick={e => {
+                                        e.preventDefault();
+                                        deleteComment(postId, comment._id);
+                                    }}>
+                                        <i className="fas fa-times fa-2x"></i>
+                                    </Button>
+                                )
+                            }
                         </div>
                     )
                 }

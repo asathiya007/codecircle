@@ -26,6 +26,16 @@ function App() {
     store.dispatch(loadUser());
   }, []);
 
+  // randomized greeting 
+  const greetings = [
+    'What\'s on your mind?',
+    'Care to comment?',
+    'What do you think?',
+    'Thoughts?',
+    'Join the discussion!'
+  ];
+  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+
   return (
     <Provider store={store}>
       <Router>
@@ -43,8 +53,8 @@ function App() {
             <PrivateRoute exact path="/edit-profile" component={EditProfile} />
             <PrivateRoute exact path="/add-education" component={AddEducation} />
             <PrivateRoute exact path="/add-experience" component={AddExperience} />
-            <PrivateRoute exact path="/posts" component={Posts} />
-            <PrivateRoute exact path="/posts/:id" component={Post} />
+            <PrivateRoute exact path="/posts" component={Posts}/>
+            <PrivateRoute exact path="/posts/:id" component={Post} greeting={greeting} />
             <Route component={NotFound}/>
           </Switch>
         </Fragment>

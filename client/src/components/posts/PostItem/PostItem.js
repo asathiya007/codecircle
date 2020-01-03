@@ -25,6 +25,7 @@ const PostItem = (
 ) => {
     const [fileData, setFileData] = useState({});
     const [isImage, toggleIsImage] = useState(false);
+    const [isVideo, toggleIsVideo] = useState(false);
 
     useEffect(() => {
         const processFile = async () => {
@@ -35,6 +36,11 @@ const PostItem = (
                     const newData = new Buffer(data).toString('base64');
                     setFileData({data: newData, mimetype});
                     toggleIsImage(true);
+                } else if (res.data.mimetype.toString().includes('video') || res.data.mimetype.toString().includes('mp4')) {
+                    const { mimetype, data } = res.data;
+                    const newData = new Buffer(data).toString('base64');
+                    setFileData({ data: newData, mimetype });
+                    toggleIsVideo(true);
                 }
             }
         }
@@ -66,14 +72,19 @@ const PostItem = (
                 </p>
                 {
                     isImage && (
-                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-50" />
+                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" />
+                    )
+                }
+                {
+                    isVideo && (
+                        <video src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" autoPlay controls muted loop />
                     )
                 }
                 {
                     showActions && (
                         <div className="mt2">
                             <hr className="hr-dark"/>
-                            <Button variant="success" className="mr1" onClick={e => {
+                            <Button variant="success" className="mr1 button-margins" onClick={e => {
                                 e.preventDefault(); 
                                 likePost(post._id); 
                             }}>
@@ -84,7 +95,7 @@ const PostItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="danger" className="mh1" onClick={e => {
+                            <Button variant="danger" className="mh1 button-margins" onClick={e => {
                                 e.preventDefault();
                                 lovePost(post._id);
                             }}>
@@ -95,7 +106,7 @@ const PostItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="warning" className="mh1" onClick={e => {
+                            <Button variant="warning" className="mh1 button-margins" onClick={e => {
                                 e.preventDefault();
                                 laughPost(post._id);
                             }}>
@@ -108,7 +119,7 @@ const PostItem = (
                             </Button>
                             {
                                 showComment && (
-                                    <Button href={`/posts/${post._id}`} variant="primary" className="mh1">
+                                    <Button href={`/posts/${post._id}`} variant="primary" className="mh1 button-margins">
                                         <i className="fas fa-comments fa-2x"></i>
                                         {
                                             post.comments.length > 0 && (
@@ -120,7 +131,7 @@ const PostItem = (
                             }
                             {
                                 post.user === auth.user._id && (
-                                    <Button variant="danger" className="mh1" onClick={e => {
+                                    <Button variant="danger" className="mh1 button-margins" onClick={e => {
                                         e.preventDefault();
                                         deletePost(post._id);
                                         history.push('/posts');

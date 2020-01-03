@@ -18,7 +18,7 @@ const Navigation = ({auth: {isAuthenticated, loading}, logout, history}) => {
                 </Nav.Link>
                 <Nav.Link href="/posts" className="text-white">
                     <span className="blue-hover">
-                        Posts
+                        CircleChat
                     </span>
                 </Nav.Link>
                 <Nav.Link href="/dashboard" className="text-white">

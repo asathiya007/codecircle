@@ -8,18 +8,18 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { setAlert } from '../../../actions/alert';
 
-const CommentForm = ({ post, auth, addComment, setAlert }) => {
+const CommentForm = ({ post, auth, addComment, setAlert, greeting}) => {
     const [text, setText] = useState('');
 
-    // randomized greeting 
-    const greetings = [
-        'What\'s on your mind?',
-        'Care to comment?',
-        'What do you think?',
-        'Thoughts?',
-        'Join the discussion!'
-    ];
-    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    // // randomized greeting 
+    // const greetings = [
+    //     'What\'s on your mind?',
+    //     'Care to comment?',
+    //     'What do you think?',
+    //     'Thoughts?',
+    //     'Join the discussion!'
+    // ];
+    // const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -66,7 +66,7 @@ const CommentForm = ({ post, auth, addComment, setAlert }) => {
                         <Form.Control type="text" as="textarea" name="text" placeholder={greeting} value={text} onChange={e => setText(e.target.value)} />
                     </Form.Group>
                     <label htmlFor="fileInput" className="btn btn-secondary mb0 mr1">
-                        <i className="fas fa-image"></i> Upload Image
+                        <i className="fas fa-image"></i> Upload Image/Video
                         </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary" />
                     <Button variant="primary" className="mh1" type="submit">

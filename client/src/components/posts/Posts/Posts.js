@@ -9,21 +9,21 @@ import PostItem from '../PostItem/PostItem';
 
 const Posts = ({loadUser, getPosts, post}) => { 
     useEffect(() => {
+        loadUser();
         getPosts();
-    }, [getPosts]); 
-    
-    loadUser(); 
+    }, [getPosts, loadUser]); 
+
     return post.loading || !post.posts ? <Spinner /> : (
         <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
-                    Posts
+                    CircleChat
                 </p>
                 <p className="f3 fw4">
                     <i className="fas fa-globe-americas"></i>
                     {' '}Chat with the CodeCircle community!
                 </p>
-                <PostForm />
+                <PostForm/>
                 <hr/>
                 <div>
                     {

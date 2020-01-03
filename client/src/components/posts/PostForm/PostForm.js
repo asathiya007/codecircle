@@ -13,12 +13,13 @@ const PostForm = ({auth, addPost, setAlert}) => {
 
     // randomized greeting 
     const greetings = [
-        'What\'s on your mind?', 
+        'What\'s on your mind?',
         'How\'s your day been?',
         'Best part of today?',
         'Exciting plans tonight?',
-        'Got some big news?'
-    ]; 
+        'Got some big news?',
+        'Anything cool to share?'
+    ];
     const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
     const onSubmit = async e => {
@@ -66,7 +67,7 @@ const PostForm = ({auth, addPost, setAlert}) => {
                         <Form.Control type="text" as="textarea" name="text" placeholder={greeting} value={text} onChange={e => setText(e.target.value)}/>
                     </Form.Group>
                     <label htmlFor="fileInput" className="btn btn-secondary mb0 mr3">
-                        <i className="fas fa-image"></i> Upload Image 
+                        <i className="fas fa-image"></i> Upload Image/Video 
                     </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary"/>
                     <Button variant="primary" className="mh1" type="submit">

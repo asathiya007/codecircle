@@ -27,19 +27,19 @@ const Dashboard = ({auth: {user}, profile: {profile, loading}, getProfile, delet
                 {profile !== null && user ? (
                     <Fragment>
                         <div>
-                            <Button variant="primary" href={`/profiles/${user._id}`}className="mr3">
+                            <Button variant="primary" href={`/profiles/${user._id}`} className="mr3 button-margins">
                                 <i className="fas fa-user-circle"></i>
                                 {' '}View Profile
                             </Button>
-                            <Button variant="primary" href="/edit-profile" className="mh3">
+                            <Button variant="primary" href="/edit-profile" className="mh3 button-margins">
                                 <i className="fas fa-user-edit"></i>
                                 {' '}Edit Profile
                             </Button>
-                            <Button variant="primary" href="/add-education" className="mh3">
+                            <Button variant="primary" href="/add-education" className="mh3 button-margins">
                                 <i className="fas fa-graduation-cap"></i>
                                 {' '}Add Education
                             </Button>
-                            <Button variant="primary" href="/add-experience" className="mh3">
+                            <Button variant="primary" href="/add-experience" className="mh3 button-margins">
                                 <i className="fas fa-briefcase"></i>
                                 {' '}Add Experience
                             </Button>

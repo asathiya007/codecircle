@@ -8,12 +8,13 @@ import PostItem from '../../posts/PostItem/PostItem';
 import CommentForm from '../CommentForm/CommentForm';
 import CommentItem from '../CommentItem/CommentItem';
 
-const Post = ({match, getPost, loadUser, post}) => {
+const Post = ({match, getPost, loadUser, post, greeting}) => {
     useEffect(() => {
         loadUser(); 
         getPost(match.params.id); 
     }, [getPost, loadUser, match.params.id]); 
 
+    console.log(greeting);
     return (!post && post.loading) || !post.post ? <Spinner/> : (
         <div className="h-center top-space bottom-space">
             <div className="w-60">
@@ -25,7 +26,7 @@ const Post = ({match, getPost, loadUser, post}) => {
                     {' '}Leave your remarks on {post.post.name.trim().split(' ')[0]}'s post!
                 </p>
                 <PostItem post={post.post} showComment={false}/>
-                <CommentForm post={post.post}/>
+                <CommentForm post={post.post} greeting={greeting}/>
                 <hr/>
                 <Fragment>
                     {
