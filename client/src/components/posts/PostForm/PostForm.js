@@ -82,7 +82,7 @@ const PostForm = ({auth, addPost, setAlert}) => {
             setText('');
         } catch (error) {
             if (error.response && error.response.status === 503) {
-                setAlert('Unable to make post, please provide less text and/or a smaller image/video file', 'danger'); 
+                setAlert('Unable to upload image/video file, please provide smaller file', 'danger'); 
             } else {
                 setAlert('Unable to make post, please try again later', 'danger'); 
             }

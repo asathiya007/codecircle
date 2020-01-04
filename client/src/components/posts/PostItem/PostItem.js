@@ -67,17 +67,25 @@ const PostItem = (
     useEffect(() => {
         const processFile = async () => {
             if (post.file) {
-                const res = await axios.get(`/api/posts/displayfile/${post.file}`);
-                if (res.data.mimetype.toString().includes('image')) {
-                    const { mimetype, data } = res.data;
-                    const newData = new Buffer(data).toString('base64');
-                    setFileData({ data: newData, mimetype });
-                    toggleIsImage(true);
-                } else if (res.data.mimetype.toString().includes('video') || res.data.mimetype.toString().includes('mp4')) {
-                    const { mimetype, data } = res.data;
-                    const newData = new Buffer(data).toString('base64');
-                    setFileData({ data: newData, mimetype });
-                    toggleIsVideo(true);
+                try {
+                    const res = await axios.get(`/api/posts/displayfile/${post.file}`);
+                    if (res.data.mimetype.toString().includes('image')) {
+                        const { mimetype, data } = res.data;
+                        const newData = new Buffer(data).toString('base64');
+                        setFileData({ data: newData, mimetype });
+                        toggleIsImage(true);
+                    } else if (res.data.mimetype.toString().includes('video') || res.data.mimetype.toString().includes('mp4')) {
+                        const { mimetype, data } = res.data;
+                        const newData = new Buffer(data).toString('base64');
+                        setFileData({ data: newData, mimetype });
+                        toggleIsVideo(true);
+                    }
+                } catch (error) {
+                    if (error.response && error.response.status === 503) {
+                        setAlert('Unable to display image/video file, size too large', 'danger');
+                    } else {
+                        setAlert('Unable to display image/video file, please try again later', 'danger');
+                    }
                 }
             }
         }
@@ -173,12 +181,8 @@ const PostItem = (
                                 post.user === auth.user._id && (
                                     <Button variant="danger" className="mh1 button-margins" id={'deleteButton' + post._id} onClick={async e => {
                                         e.preventDefault();
-                                        try {
-                                            disableButtons();
-                                            await deletePost(post._id);
-                                        } catch (error) {
-                                            setAlert('Unable to delete post, please try again later', 'danger'); 
-                                        }
+                                        disableButtons();
+                                        await deletePost(post._id);
                                         enableButtons();
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>

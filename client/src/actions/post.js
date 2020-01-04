@@ -71,6 +71,13 @@ export const addPost = (formData) => async dispatch => {
         // alert the user of added post 
         dispatch(setAlert('Added post', 'success')); 
     } catch (error) {
+        // alert the user that there has been an error
+        if (error.response && error.response.status === 503) {
+            dispatch(setAlert('Unable to make post, please provide less text and/or a smaller image/video file', 'danger'));
+        } else {
+            dispatch(setAlert('Unable to make post, please try again later', 'danger'));
+        }
+
         // send error data to the store (post)
         dispatch({
             type: POST_ERROR, 
@@ -165,6 +172,9 @@ export const deletePost = (postId) => async dispatch => {
         // alert the user that the post has been removed 
         dispatch(setAlert('Deleted post', 'success'));
     } catch (error) {
+        // alert the user that there has been an error
+        dispatch(setAlert('Unable to delete post, please try again later', 'danger'));
+
         // send error data to store (post) 
         dispatch({
             type: POST_ERROR, 
@@ -192,6 +202,13 @@ export const addComment = (postId, formData) => async dispatch => {
         // alert user that comment has been added 
         dispatch(setAlert('Added comment to post', 'success'));
     } catch (error) {
+        // alert the user that there has been an error
+        if (error.response && error.response.status === 503) {
+            dispatch(setAlert('Unable to make comment, please provide less text and/or a smaller image/video file', 'danger'));
+        } else {
+            dispatch(setAlert('Unable to make comment, please try again later', 'danger'));
+        }
+
         // send error data to store (post)
         dispatch({
             type: POST_ERROR,
@@ -214,6 +231,9 @@ export const deleteComment = (postId, commentId) => async dispatch => {
         // alert the user that a comment has been deleted
         dispatch(setAlert('Deleted comment from post', 'success'));
     } catch (error) {
+        // alert the user that there has been an error
+        dispatch(setAlert('Unable to delete comment, please try again later', 'danger'));
+
         // send error data to store (post)
         dispatch({
             type: POST_ERROR,
