@@ -22,19 +22,7 @@ const PostForm = ({auth, addPost, setAlert}) => {
     ];
     const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
-    const onSubmit = async e => {
-        e.preventDefault();
-        
-        // get value of file input 
-        const file = document.querySelector('#fileInput').files; 
-
-        // stop submit action if empty text and no file is provided 
-        if ((!file || file === {}) && (!text || text === '')) {
-            setAlert('Please provide text or an image/video to post', 'danger');
-            return;
-        }
-
-        // disable input fields 
+    const disaleInputs = () => {
         if (document.querySelector('#fileInput')) {
             document.querySelector('#fileInput').setAttribute('disabled', true);
         }
@@ -45,23 +33,9 @@ const PostForm = ({auth, addPost, setAlert}) => {
             document.querySelector('#postButton').setAttribute('disabled', true);
             document.querySelector('#postButton').textContent = 'Posting...';
         }
+    }
 
-        // if user provided file, upload file to server and get file data
-        let fileData = null; 
-        if (file[0]) {
-            fileData = new FormData(); 
-            fileData.append('file', file[0]);
-            const res = await axios.post('/uploads', fileData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }); 
-            fileData = res.data; 
-        }
-    
-        // add post, reset input field values, enable input fields
-        addPost({ text, fileData });
-        setText('');
+    const enableInputs = () => {
         if (document.querySelector('#fileInput')) {
             document.querySelector('#fileInput').value = '';
             document.querySelector('#fileInput').removeAttribute('disabled');
@@ -73,6 +47,48 @@ const PostForm = ({auth, addPost, setAlert}) => {
             document.querySelector('#postButton').removeAttribute('disabled');
             document.querySelector('#postButton').textContent = 'Post';
         }
+    }
+
+    const onSubmit = async e => {
+        e.preventDefault();
+        
+        try {
+            // get value of file input 
+            const file = document.querySelector('#fileInput').files;
+
+            // stop submit action if empty text and no file is provided 
+            if ((!file || file === {}) && (!text || text === '')) {
+                setAlert('Please provide text or an image/video to post', 'danger');
+                return;
+            }
+
+            disaleInputs();
+
+            // if user provided file, upload file to server and get file data
+            let fileData = null;
+            if (file[0]) {
+                fileData = new FormData();
+                fileData.append('file', file[0]);
+                const res = await axios.post('/uploads', fileData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                fileData = res.data;
+            }
+
+            // add post, reset input field values
+            addPost({ text, fileData });
+            setText('');
+        } catch (error) {
+            if (error.response && error.response.status === 503) {
+                setAlert('Unable to make post, please provide less text and/or a smaller image/video file', 'danger'); 
+            } else {
+                setAlert('Unable to make post, please try again later', 'danger'); 
+            }
+        }
+
+        enableInputs();
     }
 
     return (

@@ -12,19 +12,7 @@ import {withRouter} from 'react-router-dom';
 const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => {
     const [text, setText] = useState('');
 
-    const onSubmit = async e => {
-        e.preventDefault();
-        
-        // get value of file input 
-        const file = document.querySelector('#fileInput').files;
-
-        // stop submit action if empty text and no file is provided 
-        if ((!file || file === {}) && (!text || text === '')) {
-            setAlert('Please provide text or an image/video to post', 'danger');
-            return;
-        }
-
-        // disable input fields
+    const disableInputs = () => {
         if (document.querySelector('#fileInput')) {
             document.querySelector('#fileInput').setAttribute('disabled', true);
         }
@@ -38,23 +26,9 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => 
         if (document.querySelector('#backButton')) {
             document.querySelector('#backButton').setAttribute('disabled', true);
         }
+    }
 
-        // if user provided file, upload file to server and get file data
-        let fileData = null;
-        if (file[0]) {
-            fileData = new FormData();
-            fileData.append('file', file[0]);
-            const res = await axios.post('/uploads', fileData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            fileData = res.data;
-        }
-
-        // add comment and reset input fields 
-        addComment(post._id, { text, fileData });
-        setText('');
+    const enableInputs = () => {
         if (document.querySelector('#fileInput')) {
             document.querySelector('#fileInput').value = '';
             document.querySelector('#fileInput').removeAttribute('disabled');
@@ -69,6 +43,48 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => 
         if (document.querySelector('#backButton')) {
             document.querySelector('#backButton').removeAttribute('disabled');
         }
+    }
+
+    const onSubmit = async e => {
+        e.preventDefault();
+
+        try {
+            // get value of file input 
+            const file = document.querySelector('#fileInput').files;
+
+            // stop submit action if empty text and no file is provided 
+            if ((!file || file === {}) && (!text || text === '')) {
+                setAlert('Please provide text or an image/video to post', 'danger');
+                return;
+            }
+
+            disableInputs();
+
+            // if user provided file, upload file to server and get file data
+            let fileData = null;
+            if (file[0]) {
+                fileData = new FormData();
+                fileData.append('file', file[0]);
+                const res = await axios.post('/uploads', fileData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                fileData = res.data;
+            }
+
+            // add comment and reset input fields 
+            addComment(post._id, { text, fileData });
+            setText('');
+        } catch (error) {
+            if (error.response && error.response.status === 503) {
+                setAlert('Unable to make comment, please provide less text and/or a smaller image/video file', 'danger');
+            } else {
+                setAlert('Unable to make comment, please try again later', 'danger');
+            }
+        }
+        
+        enableInputs(); 
     }
 
     return (
