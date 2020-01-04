@@ -77,9 +77,8 @@ const PostForm = ({auth, addPost, setAlert}) => {
                 fileData = res.data;
             }
 
-            // add post, reset input field values
+            // add post
             addPost({ text, fileData });
-            setText('');
         } catch (error) {
             if (error.response && error.response.status === 503) {
                 setAlert('Unable to upload image/video file, please provide smaller file', 'danger'); 
@@ -87,7 +86,8 @@ const PostForm = ({auth, addPost, setAlert}) => {
                 setAlert('Unable to make post, please try again later', 'danger'); 
             }
         }
-
+        setText('');
+        document.querySelector('#fileInput').value = ''; 
         enableInputs();
     }
 
