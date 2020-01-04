@@ -9,6 +9,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Image from 'react-bootstrap/Image';
 import Spinner from '../../layout/Spinner/Spinner';
 import Button from 'react-bootstrap/Button';
+import { setAlert } from '../../../actions/alert';
 
 const PostItem = (
     {
@@ -172,8 +173,12 @@ const PostItem = (
                                 post.user === auth.user._id && (
                                     <Button variant="danger" className="mh1 button-margins" id={'deleteButton' + post._id} onClick={async e => {
                                         e.preventDefault();
-                                        disableButtons();
-                                        await deletePost(post._id);
+                                        try {
+                                            disableButtons();
+                                            await deletePost(post._id);
+                                        } catch (error) {
+                                            setAlert('Unable to delete post, please try again later', 'danger'); 
+                                        }
                                         enableButtons();
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>
