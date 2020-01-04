@@ -14,7 +14,6 @@ const Post = ({match, getPost, loadUser, post, greeting}) => {
         getPost(match.params.id); 
     }, [getPost, loadUser, match.params.id]); 
 
-    console.log(greeting);
     return (!post && post.loading) || !post.post ? <Spinner/> : (
         <div className="h-center top-space bottom-space">
             <div className="w-60">

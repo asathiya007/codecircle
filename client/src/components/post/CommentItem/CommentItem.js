@@ -27,6 +27,36 @@ const CommentItem = (
     const [isImage, toggleIsImage] = useState(false);
     const [isVideo, toggleIsVideo] = useState(false);
 
+    const disableButtons = () => {
+        if (document.querySelector('#likeButton' + comment._id)) {
+            document.querySelector('#likeButton' + comment._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#loveButton' + comment._id)) {
+            document.querySelector('#loveButton' + comment._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#laughButton' + comment._id)) {
+            document.querySelector('#laughButton' + comment._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#deleteButton' + comment._id)) {
+            document.querySelector('#deleteButton' + comment._id).setAttribute('disabled', true);
+        }
+    }; 
+
+    const enableButtons = () => {
+        if (document.querySelector('#likeButton' + comment._id)) {
+            document.querySelector('#likeButton' + comment._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#loveButton' + comment._id)) {
+            document.querySelector('#loveButton' + comment._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#laughButton' + comment._id)) {
+            document.querySelector('#laughButton' + comment._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#deleteButton' + comment._id)) {
+            document.querySelector('#deleteButton' + comment._id).removeAttribute('disabled');
+        }
+    };
+
     useEffect(() => {
         const processFile = async () => {
             if (comment.file) {
@@ -48,7 +78,7 @@ const CommentItem = (
         processFile();
     }, [comment.file]);
 
-    return auth.loading ? <Spinner /> : (
+    return auth.loading || !comment ? <Spinner /> : (
         <Jumbotron className="comment">
             <div>
                 <Link to={`/profiles/${comment.user}`}>
@@ -70,21 +100,22 @@ const CommentItem = (
                 <p className="f4 mb2">
                     {comment.text}
                 </p>
+                
                 {
                     isImage && (
-                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" />
+                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" id={'userFile' + comment._id} />
                     )
                 }
                 {
                     isVideo && (
-                        <video src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" autoPlay controls muted loop/>
+                        <video src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" autoPlay controls muted loop id={'userFile' + comment._id}/>
                     )
                 }
                 {
                     showActions && (
                         <div className="mt2">
                             <hr className="hr-dark" />
-                            <Button variant="success" className="mr1 button-margins" onClick={e => {
+                            <Button variant="success" className="mr1 button-margins" id={'likeButton' + comment._id} onClick={e => {
                                 e.preventDefault();
                                 likeComment(postId, comment._id);
                             }}>
@@ -95,7 +126,7 @@ const CommentItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="danger" className="mh1 button-margins" onClick={e => {
+                            <Button variant="danger" className="mh1 button-margins" id={'loveButton' + comment._id} onClick={e => {
                                 e.preventDefault();
                                 loveComment(postId, comment._id);
                             }}>
@@ -106,7 +137,7 @@ const CommentItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="warning" className="mh1 button-margins" onClick={e => {
+                            <Button variant="warning" className="mh1 button-margins" id={'laughButton' + comment._id} onClick={e => {
                                 e.preventDefault();
                                 laughComment(postId, comment._id);
                             }}>
@@ -119,9 +150,14 @@ const CommentItem = (
                             </Button>
                             {
                                 comment.user === auth.user._id && (
-                                    <Button variant="danger" className="mh1 button-margins" onClick={e => {
+                                    <Button variant="danger" className="mh1 button-margins" id={'deleteButton' + comment._id} onClick={async e => {
                                         e.preventDefault();
-                                        deleteComment(postId, comment._id);
+                                        disableButtons(); 
+                                        // await deleteComment(postId, comment._id);
+                                        setTimeout(() => {
+                                            enableButtons();
+                                        }, 3000);
+                                        // enableButtons();
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>
                                     </Button>

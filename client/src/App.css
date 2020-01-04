@@ -163,3 +163,16 @@ html, body {
     margin-left: 0px !important; 
   }
 }
+
+@media only screen and (max-width: 905px) {
+  .button-margins-1 { 
+    margin-left: 0px !important; 
+  }
+}
+
+@media only screen and (max-width: 897px) {
+  .button-margins-1 {
+    margin-top: 10px; 
+    margin-left: 0px !important; 
+  }
+}

@@ -7,25 +7,37 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { setAlert } from '../../../actions/alert';
+import {withRouter} from 'react-router-dom';
 
-const CommentForm = ({ post, auth, addComment, setAlert, greeting}) => {
+const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => {
     const [text, setText] = useState('');
-
-    // // randomized greeting 
-    // const greetings = [
-    //     'What\'s on your mind?',
-    //     'Care to comment?',
-    //     'What do you think?',
-    //     'Thoughts?',
-    //     'Join the discussion!'
-    // ];
-    // const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
     const onSubmit = async e => {
         e.preventDefault();
-
+        
         // get value of file input 
         const file = document.querySelector('#fileInput').files;
+
+        // stop submit action if empty text and no file is provided 
+        if ((!file || file === {}) && (!text || text === '')) {
+            setAlert('Please provide text or an image/video to post', 'danger');
+            return;
+        }
+
+        // disable input fields
+        if (document.querySelector('#fileInput')) {
+            document.querySelector('#fileInput').setAttribute('disabled', true);
+        }
+        if (document.querySelector('#textInput')) {
+            document.querySelector('#textInput').setAttribute('disabled', true);
+        }
+        if (document.querySelector('#commentButton')) {
+            document.querySelector('#commentButton').setAttribute('disabled', true);
+            document.querySelector('#commentButton').textContent = 'Commenting...';
+        }
+        if (document.querySelector('#backButton')) {
+            document.querySelector('#backButton').setAttribute('disabled', true);
+        }
 
         // if user provided file, upload file to server and get file data
         let fileData = null;
@@ -40,16 +52,23 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting}) => {
             fileData = res.data;
         }
 
-        // stop submit action if empty text and no file is provided 
-        if ((!fileData || fileData === {}) && (!text || text === '')) {
-            setAlert('Please provide text and/or an image to post', 'danger');
-            return;
-        }
-
         // add comment and reset input fields 
         addComment(post._id, { text, fileData });
         setText('');
-        document.querySelector('#fileInput').value = '';
+        if (document.querySelector('#fileInput')) {
+            document.querySelector('#fileInput').value = '';
+            document.querySelector('#fileInput').removeAttribute('disabled');
+        }
+        if (document.querySelector('#textInput')) {
+            document.querySelector('#textInput').removeAttribute('disabled');
+        }
+        if (document.querySelector('#commentButton')) {
+            document.querySelector('#commentButton').removeAttribute('disabled');
+            document.querySelector('#commentButton').textContent = 'Post';
+        }
+        if (document.querySelector('#backButton')) {
+            document.querySelector('#backButton').removeAttribute('disabled');
+        }
     }
 
     return (
@@ -62,17 +81,20 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting}) => {
             </div>
             <div className="w-80 ml2">
                 <Form onSubmit={onSubmit}>
-                    <Form.Group controlId="formBasicText">
-                        <Form.Control type="text" as="textarea" name="text" placeholder={greeting} value={text} onChange={e => setText(e.target.value)} />
+                    <Form.Group>
+                        <Form.Control type="text" as="textarea" name="text" id="textInput" placeholder={greeting} value={text} onChange={e => setText(e.target.value)} />
                     </Form.Group>
                     <label htmlFor="fileInput" className="btn btn-secondary mb0 mr1">
                         <i className="fas fa-image"></i> Upload Image/Video
                         </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary" />
-                    <Button variant="primary" className="mh1" type="submit">
+                    <Button variant="primary" className="mh1" type="submit" id="commentButton">
                         Comment
                     </Button>
-                    <Button variant="secondary" className="mh1" href="/posts">
+                    <Button variant="secondary" className="mh1 button-margins-1" onClick={e => {
+                        e.preventDefault(); 
+                        history.goBack(); 
+                    }} id="backButton">
                         Back to Posts
                     </Button>
                 </Form>
@@ -92,4 +114,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { addComment, setAlert })(CommentForm); 
+export default connect(mapStateToProps, { addComment, setAlert })(withRouter(CommentForm)); 

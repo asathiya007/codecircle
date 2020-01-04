@@ -9,7 +9,7 @@ const Spinner = ({clearAlerts}) => {
     }, [clearAlerts]); 
 
     return (
-        <Fragment>
+        <div className="h-center v-center w-100 h-100">
             <img 
                 src={SpinnerGIF} 
                 alt="Loading..."
@@ -20,7 +20,7 @@ const Spinner = ({clearAlerts}) => {
                     marginTop: "20%"
                 }}
             />
-        </Fragment>
+        </div>
     )
 }
 

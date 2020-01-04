@@ -27,14 +27,50 @@ const PostItem = (
     const [isImage, toggleIsImage] = useState(false);
     const [isVideo, toggleIsVideo] = useState(false);
 
+    const disableButtons = () => {
+        if (document.querySelector('#likeButton' + post._id)) {
+            document.querySelector('#likeButton' + post._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#loveButton' + post._id)) {
+            document.querySelector('#loveButton' + post._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#laughButton' + post._id)) {
+            document.querySelector('#laughButton' + post._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#commentButton' + post._id)) {
+            document.querySelector('#commentButton' + post._id).setAttribute('disabled', true);
+        }
+        if (document.querySelector('#deleteButton' + post._id)) {
+            document.querySelector('#deleteButton' + post._id).setAttribute('disabled', true); 
+        }
+    } 
+
+    const enableButtons = () => {
+        if (document.querySelector('#likeButton' + post._id)) {
+            document.querySelector('#likeButton' + post._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#loveButton' + post._id)) {
+            document.querySelector('#loveButton' + post._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#laughButton' + post._id)) {
+            document.querySelector('#laughButton' + post._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#commentButton' + post._id)) {
+            document.querySelector('#commentButton' + post._id).removeAttribute('disabled');
+        }
+        if (document.querySelector('#deleteButton' + post._id)) {
+            document.querySelector('#deleteButton' + post._id).removeAttribute('disabled');
+        }
+    }
+
     useEffect(() => {
         const processFile = async () => {
             if (post.file) {
-                const res = await axios.get(`/api/posts/displayfile/${post.file}`); 
+                const res = await axios.get(`/api/posts/displayfile/${post.file}`);
                 if (res.data.mimetype.toString().includes('image')) {
-                    const {mimetype, data} = res.data; 
+                    const { mimetype, data } = res.data;
                     const newData = new Buffer(data).toString('base64');
-                    setFileData({data: newData, mimetype});
+                    setFileData({ data: newData, mimetype });
                     toggleIsImage(true);
                 } else if (res.data.mimetype.toString().includes('video') || res.data.mimetype.toString().includes('mp4')) {
                     const { mimetype, data } = res.data;
@@ -48,7 +84,7 @@ const PostItem = (
         processFile(); 
     }, [post.file]);
 
-    return post.loading || auth.loading ? <Spinner/> : (
+    return !post || (post.loading || auth.loading) ? <Spinner/> : (
         <Jumbotron className="post">
             <div>
                 <Link to={`/profiles/${post.user}`}>
@@ -72,19 +108,19 @@ const PostItem = (
                 </p>
                 {
                     isImage && (
-                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" />
+                        <Image src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" id={'userFile' + post._id}/>
                     )
                 }
                 {
                     isVideo && (
-                        <video src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" autoPlay controls muted loop />
+                        <video src={`data:${fileData.mimetype};base64,${fileData.data}`} alt='user file' className="w-60" autoPlay controls muted loop id={'userFile' + post._id}/>
                     )
                 }
                 {
                     showActions && (
                         <div className="mt2">
                             <hr className="hr-dark"/>
-                            <Button variant="success" className="mr1 button-margins" onClick={e => {
+                            <Button variant="success" className="mr1 button-margins" id={'likeButton' + post._id} onClick={e => {
                                 e.preventDefault(); 
                                 likePost(post._id); 
                             }}>
@@ -95,7 +131,7 @@ const PostItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="danger" className="mh1 button-margins" onClick={e => {
+                            <Button variant="danger" className="mh1 button-margins" id={'loveButton' + post._id} onClick={e => {
                                 e.preventDefault();
                                 lovePost(post._id);
                             }}>
@@ -106,7 +142,7 @@ const PostItem = (
                                     )
                                 }
                             </Button>
-                            <Button variant="warning" className="mh1 button-margins" onClick={e => {
+                            <Button variant="warning" className="mh1 button-margins" id={'laughButton' + post._id} onClick={e => {
                                 e.preventDefault();
                                 laughPost(post._id);
                             }}>
@@ -119,7 +155,10 @@ const PostItem = (
                             </Button>
                             {
                                 showComment && (
-                                    <Button href={`/posts/${post._id}`} variant="primary" className="mh1 button-margins">
+                                    <Button onClick={e => {
+                                        e.preventDefault(); 
+                                        history.push(`/posts/${post._id}`)
+                                    }} variant="primary" className="mh1 button-margins" id={'commentButton' + post._id}>
                                         <i className="fas fa-comments fa-2x"></i>
                                         {
                                             post.comments.length > 0 && (
@@ -131,10 +170,14 @@ const PostItem = (
                             }
                             {
                                 post.user === auth.user._id && (
-                                    <Button variant="danger" className="mh1 button-margins" onClick={e => {
+                                    <Button variant="danger" className="mh1 button-margins" id={'deleteButton' + post._id} onClick={async e => {
                                         e.preventDefault();
-                                        deletePost(post._id);
-                                        history.push('/posts');
+                                        disableButtons();
+                                        // await deletePost(post._id);
+                                        setTimeout(() => {
+                                            enableButtons(); 
+                                        }, 3000); 
+                                        // enableButtons();
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>
                                     </Button>

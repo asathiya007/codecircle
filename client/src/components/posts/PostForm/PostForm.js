@@ -28,6 +28,24 @@ const PostForm = ({auth, addPost, setAlert}) => {
         // get value of file input 
         const file = document.querySelector('#fileInput').files; 
 
+        // stop submit action if empty text and no file is provided 
+        if ((!file || file === {}) && (!text || text === '')) {
+            setAlert('Please provide text or an image/video to post', 'danger');
+            return;
+        }
+
+        // disable input fields 
+        if (document.querySelector('#fileInput')) {
+            document.querySelector('#fileInput').setAttribute('disabled', true);
+        }
+        if (document.querySelector('#textInput')) {
+            document.querySelector('#textInput').setAttribute('disabled', true);
+        }
+        if (document.querySelector('#postButton')) {
+            document.querySelector('#postButton').setAttribute('disabled', true);
+            document.querySelector('#postButton').textContent = 'Posting...';
+        }
+
         // if user provided file, upload file to server and get file data
         let fileData = null; 
         if (file[0]) {
@@ -40,17 +58,21 @@ const PostForm = ({auth, addPost, setAlert}) => {
             }); 
             fileData = res.data; 
         }
-
-        // stop submit action if empty text and no file is provided 
-        if ((!fileData || fileData === {}) && (!text || text === '')) {
-            setAlert('Please provide text and/or an image to post', 'danger');
-            return;
-        }
-
-        // add post and reset input fields 
-        addPost({text, fileData});
+    
+        // add post, reset input field values, enable input fields
+        addPost({ text, fileData });
         setText('');
-        document.querySelector('#fileInput').value = '';
+        if (document.querySelector('#fileInput')) {
+            document.querySelector('#fileInput').value = '';
+            document.querySelector('#fileInput').removeAttribute('disabled');
+        }
+        if (document.querySelector('#textInput')) {
+            document.querySelector('#textInput').removeAttribute('disabled');
+        }
+        if (document.querySelector('#postButton')) {
+            document.querySelector('#postButton').removeAttribute('disabled');
+            document.querySelector('#postButton').textContent = 'Post';
+        }
     }
 
     return (
@@ -63,14 +85,14 @@ const PostForm = ({auth, addPost, setAlert}) => {
             </div>
             <div className="w-80 ml2">
                 <Form onSubmit={onSubmit}>
-                    <Form.Group controlId="formBasicText">
-                        <Form.Control type="text" as="textarea" name="text" placeholder={greeting} value={text} onChange={e => setText(e.target.value)}/>
+                    <Form.Group>
+                        <Form.Control type="text" as="textarea" name="text" id="textInput" placeholder={greeting} value={text} onChange={e => setText(e.target.value)}/>
                     </Form.Group>
                     <label htmlFor="fileInput" className="btn btn-secondary mb0 mr3">
                         <i className="fas fa-image"></i> Upload Image/Video 
                     </label>
                     <input type="file" name="fileInput" id="fileInput" className="btn btn-secondary"/>
-                    <Button variant="primary" className="mh1" type="submit">
+                    <Button variant="primary" className="mh1" type="submit" id="postButton">
                         Post
                     </Button>
                 </Form>
