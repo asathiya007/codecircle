@@ -153,11 +153,8 @@ const CommentItem = (
                                     <Button variant="danger" className="mh1 button-margins" id={'deleteButton' + comment._id} onClick={async e => {
                                         e.preventDefault();
                                         disableButtons(); 
-                                        // await deleteComment(postId, comment._id);
-                                        setTimeout(() => {
-                                            enableButtons();
-                                        }, 3000);
-                                        // enableButtons();
+                                        await deleteComment(postId, comment._id);
+                                        enableButtons();
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>
                                     </Button>

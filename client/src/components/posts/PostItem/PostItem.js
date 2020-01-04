@@ -173,11 +173,8 @@ const PostItem = (
                                     <Button variant="danger" className="mh1 button-margins" id={'deleteButton' + post._id} onClick={async e => {
                                         e.preventDefault();
                                         disableButtons();
-                                        // await deletePost(post._id);
-                                        setTimeout(() => {
-                                            enableButtons(); 
-                                        }, 3000); 
-                                        // enableButtons();
+                                        await deletePost(post._id);
+                                        enableButtons();
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>
                                     </Button>
