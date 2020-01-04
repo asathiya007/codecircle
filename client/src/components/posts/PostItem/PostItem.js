@@ -184,6 +184,7 @@ const PostItem = (
                                         disableButtons();
                                         await deletePost(post._id);
                                         enableButtons();
+                                        history.push('/posts');
                                     }}>
                                         <i className="fas fa-times fa-2x"></i>
                                     </Button>
