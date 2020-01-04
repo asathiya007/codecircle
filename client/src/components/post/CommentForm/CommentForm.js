@@ -75,15 +75,15 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => 
 
             // add comment and reset input fields 
             addComment(post._id, { text, fileData });
+            setText('');
+            document.querySelector('#fileInput').value = '';
         } catch (error) {
             if (error.response && error.response.status === 503) {
                 setAlert('Unable to upload image/video file, please provide smaller image/video file', 'danger');
             } else {
                 setAlert('Unable to make comment, please try again later', 'danger');
             }
-        }
-        setText('');
-        document.querySelector('#fileInput').value = ''; 
+        } 
         enableInputs(); 
     }
 
