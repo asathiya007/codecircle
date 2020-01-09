@@ -38,7 +38,7 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => 
         }
         if (document.querySelector('#commentButton')) {
             document.querySelector('#commentButton').removeAttribute('disabled');
-            document.querySelector('#commentButton').textContent = 'Post';
+            document.querySelector('#commentButton').textContent = 'Comment';
         }
         if (document.querySelector('#backButton')) {
             document.querySelector('#backButton').removeAttribute('disabled');
@@ -52,9 +52,9 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => 
             // get value of file input 
             const file = document.querySelector('#fileInput').files;
 
-            // stop submit action if empty text and no file is provided 
-            if ((!file || file === {}) && (!text || text === '')) {
-                setAlert('Please provide text or an image/video to post', 'danger');
+            // stop submit action if empty text and no file is provided
+            if ((!file || file.length === 0) && (!text || text.trim() === '')) {
+                setAlert('Please provide text or an image/video to comment', 'danger');
                 return;
             }
 
@@ -74,7 +74,7 @@ const CommentForm = ({ post, auth, addComment, setAlert, greeting, history}) => 
             }
 
             // add comment and reset input fields 
-            addComment(post._id, { text, fileData });
+            addComment(post._id, { text: text.trim(), fileData });
             setText('');
             document.querySelector('#fileInput').value = '';
         } catch (error) {

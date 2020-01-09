@@ -57,7 +57,7 @@ const PostForm = ({auth, addPost, setAlert}) => {
             const file = document.querySelector('#fileInput').files;
 
             // stop submit action if empty text and no file is provided 
-            if ((!file || file === {}) && (!text || text === '')) {
+            if ((!file || file.length === 0) && (!text || text.trim() === '')) {
                 setAlert('Please provide text or an image/video to post', 'danger');
                 return;
             }
@@ -78,7 +78,7 @@ const PostForm = ({auth, addPost, setAlert}) => {
             }
 
             // add post, reset input fields
-            addPost({ text, fileData });
+            addPost({ text: text.trim(), fileData });
             setText('');
             document.querySelector('#fileInput').value = '';
         } catch (error) {
