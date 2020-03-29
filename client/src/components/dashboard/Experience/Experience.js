@@ -13,10 +13,10 @@ const Experience = ({ experience, deleteExperience }) => {
             <td>{exp.company}</td>
             <td>{exp.location}</td>
             <td>
-                <Moment format="YYYY/MM/DD">
+                <Moment utc format="YYYY/MM/DD">
                     {exp.from}
                 </Moment> - {
-                    exp.to === null ? ('Now') : (<Moment format="YYYY/MM/DD">
+                    exp.to === null ? ('Now') : (<Moment utc format="YYYY/MM/DD">
                         {exp.to}
                     </Moment>)
                 }

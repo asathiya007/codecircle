@@ -13,10 +13,10 @@ const Education = ({education, deleteEducation}) => {
             <td>{edu.degree}</td>
             <td>{edu.fieldOfStudy}</td>
             <td>
-                <Moment format="YYYY/MM/DD">
+                <Moment utc format="YYYY/MM/DD">
                     {edu.from}
                 </Moment> - {
-                    edu.to === null ? ('Now') : (<Moment format="YYYY/MM/DD">
+                    edu.to === null ? ('Now') : (<Moment utc format="YYYY/MM/DD">
                         {edu.to}
                     </Moment>)
                 }
