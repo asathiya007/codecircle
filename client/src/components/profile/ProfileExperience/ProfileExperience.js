@@ -16,10 +16,10 @@ const ProfileExperience = ({ profile }) => {
                                     <p className="f4 fw5 mv0 pv0">{exp.company}</p>
                                     <p className="mv0 pv0">
                                         <span className="fw5">Duration: </span>
-                                        <Moment format="YYYY/MM/DD">
+                                        <Moment utc format="YYYY/MM/DD">
                                             {exp.from}
                                         </Moment> - {!exp.to ? 'Now' :
-                                            <Moment format="YYYY/MM/DD">
+                                            <Moment utc format="YYYY/MM/DD">
                                                 {exp.to}
                                             </Moment>}
                                     </p>

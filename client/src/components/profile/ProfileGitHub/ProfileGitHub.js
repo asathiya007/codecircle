@@ -25,19 +25,19 @@ const ProfileGitHub = ({username, getGitHubRepos, repos}) => {
                             <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="f4 fw5 mv0 pv0">{repo.name}</a>
                             <p className="mv0 pv0">
                                 <span className="fw5">Created: </span>
-                                <Moment format="YYYY/MM/DD">
+                                <Moment utc format="YYYY/MM/DD">
                                     {repo.created_at}
                                 </Moment>
                             </p>
                             <p className="mv0 pv0">
                                 <span className="fw5">Updated: </span>
-                                <Moment format="YYYY/MM/DD">
+                                <Moment utc format="YYYY/MM/DD">
                                     {repo.updated_at}
                                 </Moment>
                             </p>
                             <p className="mv0 pv0">
                                 <span className="fw5">Pushed: </span>
-                                <Moment format="YYYY/MM/DD">
+                                <Moment utc format="YYYY/MM/DD">
                                     {repo.pushed_at}
                                 </Moment>
                             </p>

@@ -16,10 +16,10 @@ const ProfileEducation = ({profile}) => {
                                     <p className="f4 fw5 mv0 pv0">{edu.institution}</p>
                                     <p className="mv0 pv0">
                                         <span className="fw5">Duration: </span>
-                                        <Moment format="YYYY/MM/DD">
+                                        <Moment utc format="YYYY/MM/DD">
                                             {edu.from}
                                         </Moment> - {!edu.to ? 'Now' :
-                                            <Moment format="YYYY/MM/DD">
+                                            <Moment utc format="YYYY/MM/DD">
                                                 {edu.to}
                                             </Moment>}
                                     </p>
