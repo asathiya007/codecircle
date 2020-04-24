@@ -166,7 +166,7 @@ const PostItem = (
                                 showComment && (
                                     <Button onClick={e => {
                                         e.preventDefault(); 
-                                        history.push(`/posts/${post._id}`)
+                                        history.push(`/world/${post._id}`)
                                     }} variant="primary" className="mh1 button-margins" id={'commentButton' + post._id}>
                                         <i className="fas fa-comments fa-2x"></i>
                                         {

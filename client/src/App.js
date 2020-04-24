@@ -20,6 +20,7 @@ import Profile from './components/profile/Profile/Profile';
 import Posts from './components/posts/Posts/Posts';
 import Post from './components/post/Post/Post';
 import NotFound from './components/layout/NotFound/NotFound';
+import Chats from './components/chats/Chats/Chats';
 
 function App() {
   useEffect(() => {
@@ -53,8 +54,9 @@ function App() {
             <PrivateRoute exact path="/edit-profile" component={EditProfile} />
             <PrivateRoute exact path="/add-education" component={AddEducation} />
             <PrivateRoute exact path="/add-experience" component={AddExperience} />
-            <PrivateRoute exact path="/posts" component={Posts}/>
-            <PrivateRoute exact path="/posts/:id" component={Post} greeting={greeting} />
+            <PrivateRoute exact path="/world" component={Posts}/>
+            <PrivateRoute exact path="/world/:id" component={Post} greeting={greeting} />
+            <PrivateRoute exact path="/chats" component={Chats} />
             <Route component={NotFound}/>
           </Switch>
         </Fragment>

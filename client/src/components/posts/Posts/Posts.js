@@ -17,11 +17,11 @@ const Posts = ({loadUser, getPosts, post}) => {
         <div className="h-center top-space bottom-space">
             <div className="w-60">
                 <p className="f1 fw7 text-primary mv0">
-                    CircleChat
+                    CodeWorld
                 </p>
                 <p className="f3 fw4">
                     <i className="fas fa-globe-americas"></i>
-                    {' '}Chat with the CodeCircle community!
+                    {' '}Check out what the CodeCircle community is up to!
                 </p>
                 <PostForm/>
                 <hr/>
