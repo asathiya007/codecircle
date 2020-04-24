@@ -33,7 +33,7 @@ app.post('/uploads', tokenauth, async(req, res) => {
 }); 
 
 // socket.io
-require('./routes/socket/socket')(io); 
+require('./routes/socket/socket')(app, io); 
 
 // other routes
 app.use('/api/users', require('./routes/api/users'));
