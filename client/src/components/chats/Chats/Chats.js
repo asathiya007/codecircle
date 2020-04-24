@@ -1,7 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'; 
+import socketIOClient from "socket.io-client";
 // import PropTypes from 'prop-types'; 
 
 const Chats = props => {
+    useEffect(() => {
+        try {
+          const socket = socketIOClient(process.env.PORT);
+          socket.on("chat message", (data) => {
+            console.log(data);
+          });
+        } catch (error) {
+          console.log("Connecting to socket...");
+        }
+    }, []); 
+
     return (
         <div className="h-center top-space bottom-space">
             <div className="w-60">
