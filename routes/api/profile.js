@@ -316,7 +316,7 @@ router.get('/github/:username', (req, res) => {
         const options = {
             uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=updated`,
             method: 'GET',
-            headers: { 
+            headers: {
                 'user-agent': 'node.js'
             },
             body: JSON.stringify({
