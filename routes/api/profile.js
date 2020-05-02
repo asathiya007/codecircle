@@ -314,9 +314,15 @@ router.get('/github/:username', (req, res) => {
     try {
         // fetch GitHub repos from GitHub API by GitHub username
         const options = {
-            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=updated&client_id=${config.get("githubClientId")}&client_secret=${config.get("githubSecret")}`,
+            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=updated`,
             method: 'GET',
-            headers: {'user-agent': 'node.js'}
+            headers: {
+                'user-agent': 'node.js'
+            },
+            body: JSON.stringify({
+                client_id: `${config.get("githubClientId")}`,
+                client_secret: `${config.get("githubSecret")}`
+            })
         }
         request(options, (error, response, body) => {
             if (error) console.error(error.message);
