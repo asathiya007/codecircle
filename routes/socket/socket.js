@@ -25,7 +25,7 @@ module.exports = function (app, io) {
     // @route   POST /message
     // @desc    send message to another user (PM)
     // @access  private 
-    app.post('/message', tokenauth, (req, res) => {
+    app.post('/message', tokenauth, async (req, res) => {
         const {user, recipient, message} = req.body; 
         res.json({
             user,
@@ -33,7 +33,12 @@ module.exports = function (app, io) {
             message
         }); 
 
+        // find the socketid corresponding to recipient
+        const recConns = await Connection.find({userId: recipient}); 
+
         // fix so that it only goes to a specific user (target socketids)
-        io.emit("chat message", message);
+        for (const conn of recConns) {
+            io.to(conn.socketId).emit("chat message", message);
+        }
     }); 
 }

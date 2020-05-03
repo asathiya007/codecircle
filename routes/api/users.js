@@ -92,7 +92,7 @@ router.post('/',
 router.get('/me', tokenauth, async (req, res) => {
     try {
         // check if user exists 
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user.id).select('-password');
         if (!user) {
             return res.status(404).json({errors: [
                 {msg: 'Current user data not found'}
