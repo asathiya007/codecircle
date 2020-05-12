@@ -1,4 +1,5 @@
 const Connection = require('../../models/Connection');
+const Chat = require('../../models/Chat');
 const tokenauth = require('../../middleware/tokenauth');
 
 module.exports = function (app, io) {
@@ -26,19 +27,39 @@ module.exports = function (app, io) {
     // @desc    send message to another user (PM)
     // @access  private 
     app.post('/message', tokenauth, async (req, res) => {
-        const {user, recipient, message} = req.body; 
-        res.json({
-            user,
-            recipient, 
-            message
-        }); 
+        try {
+            const {user, chat, message} = req.body;
+            const recipients = chat.users; 
+            const {_id, name, avatar} = user; 
 
-        // find the socketid corresponding to recipient
-        const recConns = await Connection.find({userId: recipient}); 
+            // find the chat and add the message to it 
+            const userChat = await Chat.findById(chat._id);
+            userChat.messages.push({
+                user: _id, 
+                name, 
+                avatar, 
+                text: message
+            });
+            await userChat.save(); 
+            res.json(userChat);
 
-        // fix so that it only goes to a specific user (target socketids)
-        for (const conn of recConns) {
-            io.to(conn.socketId).emit("chat message", message);
+            // send the message to other users if they are connected
+            for (const recipient of recipients) {
+                // find the socketid corresponding to recipient
+                const recConns = await Connection.find({ userId: recipient });
+
+                // fix so that it only goes to a specific user (target socketids)
+                for (const conn of recConns) {
+                    io.to(conn.socketId).emit("chat message", message);
+                }
+            }
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({
+                errors: [
+                    { msg: 'Server error - unable to send message' }
+                ]
+            }); 
         }
     }); 
 }
