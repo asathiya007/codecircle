@@ -132,4 +132,31 @@ router.delete('/', tokenauth, async (req, res) => {
     }
 }); 
 
+// @route   GET /api/users/:id
+// @desc    get user info based on id
+// @access  private
+router.get('/:id', tokenauth, async (req, res) => {
+    try {
+        const {id} = req.params; 
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({
+                errors: [
+                    { msg: 'User data not found' }
+                ]
+            });
+        }
+
+        res.json(user);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to get user data' }
+            ]
+        });
+    }
+})
+
 module.exports = router; 
