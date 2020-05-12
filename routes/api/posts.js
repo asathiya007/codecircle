@@ -79,7 +79,7 @@ router.post('/', tokenauth, async (req, res) => {
         console.error(error.message);
         res.status(500).json({errors: [
             {msg: 'Server error - unable to make post'}
-        ]}); 
+        ]});
     }
 }); 
 

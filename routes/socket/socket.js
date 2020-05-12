@@ -34,6 +34,13 @@ module.exports = function (app, io) {
 
             // find the chat and add the message to it 
             const userChat = await Chat.findById(chat._id);
+
+            if (!userChat) {
+                res.status(404).json({
+                  errors: [{ msg: "Chat not found, cannot send message" }],
+                }); 
+            }
+
             userChat.messages.push({
                 user: _id, 
                 name, 

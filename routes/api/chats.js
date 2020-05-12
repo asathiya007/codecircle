@@ -8,7 +8,7 @@ const Chat = require('../../models/Chat');
 // @access  private
 router.get('/', tokenauth, async (req, res) => {
     try {
-        // filter chats based on if the user is in it or not
+        // get the chats the user is a part of 
         let chats = await Chat.find();
         chats = chats.filter(chat => {
             for (const user of chat.users) {
@@ -26,6 +26,42 @@ router.get('/', tokenauth, async (req, res) => {
                 { msg: 'Server error - unable to get chats' }
             ]
         }); 
+    }
+}); 
+
+// @route   GET api/chats/:id
+// @desc    get the data for a chat by id 
+// @access  private 
+router.get('/:id', tokenauth, async (req, res) => {
+    try {
+        // get the chats the user is a part of 
+        let chats = await Chat.find();
+        chats = chats.filter(chat => {
+            for (const user of chat.users) {
+                if (String(user._id) === req.user.id) {
+                    return true; 
+                }
+            }
+            return false; 
+        }); 
+        
+        // filter the list to get the chat by id 
+        chats = chats.filter(chat => String(chat._id) === req.params.id); 
+        if (!chats[0]) {
+            res.status(404).json({
+                errors: [
+                    { msg: 'Chat not found, cannot get chat data' }
+                ]
+            });
+        }
+
+        res.json(chats[0]);
+    } catch (error) {
+        res.status(404).json({
+            errors: [
+                { msg: 'Server error - unable to get chat data' }
+            ]
+        });
     }
 }); 
 
@@ -86,11 +122,20 @@ router.delete('/:id', tokenauth, async (req, res) => {
             });
         }
 
-        // filter the users
+        // filter the users and admin 
         const filteredUsers = 
             chat.users.filter(user => String(user._id) !== req.user.id);  
+        const filteredAdmin = chat.admin.filter(
+          (admin) => String(admin._id) !== req.user.id
+        );
         chat.users = filteredUsers;
-        await chat.save();  
+        chat.admin = filteredAdmin; 
+        await chat.save();
+        
+        // if the chat has one/zero users or no admin, delete chat
+        if (chat.users.length <= 1 || chat.admin.length === 0) {
+            await chat.remove(); 
+        }
 
         // return all the user's chats 
         let chats = await Chat.find();
