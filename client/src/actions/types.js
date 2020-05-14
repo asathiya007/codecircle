@@ -24,3 +24,5 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const UPDATE_COMMENT_REACTS = 'UPDATE_COMMENT_REACTS';
 export const CLEAR_ALERTS = 'CLEAR_ALERTS';
+export const GET_CHATS = 'GET_CHATS';
+export const CHAT_ERROR = 'CHAT_ERROR';

@@ -37,6 +37,7 @@ export const getPost = id => async dispatch => {
     try {
         // get post data
         const res = await axios.get(`/api/posts/${id}`); 
+        console.log(res.data);
 
         // send post data to the store (post)
         dispatch({

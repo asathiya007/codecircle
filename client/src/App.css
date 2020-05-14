@@ -152,6 +152,24 @@ html, body {
   padding: 0;
 }
 
+.image-stack {
+  display: grid;
+  position: relative; 
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.image-stack__item--bottom {
+  grid-column: 4 / -1;
+  grid-row: 1;
+}
+
+.image-stack__item--top {
+  grid-row: 1;
+  grid-column: 1 / span 8;
+  padding-top: 20%;
+  z-index: 1; 
+}
+
 @media only screen and (max-width: 991px) {
   .top-space {
     margin-top: 200px; 
