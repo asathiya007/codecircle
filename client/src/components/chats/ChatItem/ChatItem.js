@@ -21,26 +21,28 @@ const ChatItem = ({user, chat}) => {
     }
     
     return (
-        <Jumbotron className="flex pv2 p-hover">
-            <div className="w-30">
-                {
-                    filteredUsers.length < 2 ? (
-                        <div className="flex justify-center">
-                            <Image roundedCircle src={filteredUsers[0].avatar} className="w-60"/>
-                        </div>
-                    ) : (
-                        <div className="flex justify-center">
-                             <div className="image-stack">
-                                <div className="image-stack__item image-stack__item--top">
-                                        <Image roundedCircle src={filteredUsers[0].avatar} className="w-80 ba bw1 b--light-gray" />
-                                </div>
-                                <div className="image-stack__item image-stack__item--bottom">
-                                    <Image roundedCircle src={filteredUsers[0].avatar} className="w-60" />
+        <Jumbotron className="flex pv2 pl3 p-hover">
+            <div className="flex w-20 mr3">
+                <div className="cn">
+                    {
+                        filteredUsers.length < 2 ? (
+                            <div className="my-auto">
+                                <Image roundedCircle src={filteredUsers[0].avatar}/>
+                            </div>
+                        ) : (
+                            <div>
+                                <div className="image-stack">
+                                    <div className="image-stack__item image-stack__item--top">
+                                            <Image roundedCircle src={filteredUsers[0].avatar} className="w-80 ba bw1 b--light-gray" />
+                                    </div>
+                                    <div className="image-stack__item image-stack__item--bottom">
+                                        <Image roundedCircle src={filteredUsers[0].avatar} className="w-60" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                }
+                        )
+                    }
+                </div>
             </div>
             <p className="my-auto v-mid">
                 {label}
