@@ -10,10 +10,10 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const tokenauth = require('../../middleware/tokenauth');
 
-// @route   GET /api/users/ 
+// @route   GET /api/users/test 
 // @desc    test users route -- TESTING ONLY 
 // @access  public 
-// router.get('/', (req, res) => res.json({msg: 'Testing users route'}));
+// router.get('/test', (req, res) => res.json({msg: 'Testing users route'}));
 
 // @route   POST /api/users/
 // @desc    register users
@@ -157,6 +157,33 @@ router.get('/:id', tokenauth, async (req, res) => {
             ]
         });
     }
-})
+}); 
+
+// @route   GET /api/users
+// @desc    get all users
+// @access  private
+router.get('/', tokenauth, async (req, res) => {
+    try {
+        let users = await User.find().select('-password');
+        users = users.filter(user => String(user._id) !== req.user.id); 
+
+        if (!users) {
+            return res.status(404).json({
+                errors: [
+                    { msg: 'All users data not found' }
+                ]
+            });
+        }
+
+        res.json(users);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: [
+                { msg: 'Server error - unable to get all users data' }
+            ]
+        });
+    }
+}); 
 
 module.exports = router; 

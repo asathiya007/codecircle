@@ -170,16 +170,24 @@ html, body {
   z-index: 1; 
 }
 
-@media only screen and (max-width: 991px) {
-  .top-space {
-    margin-top: 200px; 
-  }
-}
-
 .cn {
   display: flex;
   justify-content: center;
   align-items: center; 
+}
+
+.select-users {
+  overflow-x: scroll;
+  overflow-y: scroll; 
+  width: 100%; 
+  height: 200px;
+  border-color: #868e96;
+}
+
+@media only screen and (max-width: 991px) {
+  .top-space {
+    margin-top: 200px; 
+  }
 }
 
 @media only screen and (max-width: 1144px) {
