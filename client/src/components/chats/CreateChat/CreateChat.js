@@ -7,8 +7,10 @@ import {getUsers} from '../../../actions/users';
 import {connect} from 'react-redux';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Image from 'react-bootstrap/Image';
+import {createChat} from '../../../actions/chat';
+import {setAlert} from '../../../actions/alert';
 
-const CreateChat = ({show, handleClose, getUsers, users}) => {
+const CreateChat = ({user, show, handleClose, getUsers, users, createChat, setAlert}) => {
     useEffect(() => {
         getUsers(); 
     }, [getUsers]); 
@@ -34,13 +36,42 @@ const CreateChat = ({show, handleClose, getUsers, users}) => {
     }
 
     const makeChat = () => {
-        console.log('Members: ', formData.selected);
-        console.log('Message: ', formData.message); 
+
+        // input validation 
+        if (formData.selected.length === 0 || formData.message === '') {
+            alert('Please provide complete input to create chat');
+            return; 
+        }
+
+        const selUsers = [];
+        selUsers.push({
+            _id: user._id, 
+            name: user.name,
+            avatar: user.avatar
+        }); 
+        for (const i in formData.selected) {
+            selUsers.push(users[i]);
+        }
+        const data = {
+            user,
+            users: selUsers, 
+            text: formData.message
+        };
+        createChat(data);
+        onClose(); 
+    }
+
+    const onClose = () => {
+        setFormData({
+          selected: [],
+          message: '',
+        });
+        handleClose(); 
     }
 
     return (
         <div>
-            <Modal show={true} onHide={handleClose}>
+            <Modal show={show} onHide={onClose}>
                 <Modal.Header closeButton className="mb0">
                     <p className="f3 fw6 mb0">Create Chat</p>
                 </Modal.Header>
@@ -53,15 +84,24 @@ const CreateChat = ({show, handleClose, getUsers, users}) => {
                                     users.map((user, i) => {
                                         if (formData.selected.includes(i)) {
                                             return (
-                                                <ListGroup.Item key={i} onClick={e => chooseUser(i)}>
-                                                    <div className="flex">
-                                                        <div className="w-10">
-                                                            <Image roundedCircle src={user.avatar} />
-                                                        </div>
-                                                        <p className="mv0 pv0 f5 my-auto ml3 b">{user.name}</p>
-                                                    </div>
-                                                </ListGroup.Item>
-                                            )
+                                              <ListGroup.Item
+                                                className="bg-light"
+                                                key={i}
+                                                onClick={(e) => chooseUser(i)}
+                                              >
+                                                <div className="flex">
+                                                  <div className="w-10">
+                                                    <Image
+                                                      roundedCircle
+                                                      src={user.avatar}
+                                                    />
+                                                  </div>
+                                                  <p className="mv0 pv0 f5 my-auto ml3 b">
+                                                    {user.name}
+                                                  </p>
+                                                </div>
+                                              </ListGroup.Item>
+                                            );
                                         }
 
                                         return (
@@ -80,9 +120,12 @@ const CreateChat = ({show, handleClose, getUsers, users}) => {
                         </div>
                     </div>
                     <div className="mt2">
-                        <Form>
+                        <Form onSubmit={e => {
+                                e.preventDefault(); 
+                                makeChat();
+                            }}>
                             <p className="f5 mb0 pb0">Greeting:</p>
-                            <Form.Control type="email" placeholder="Greet your new chat members!" defaultValue={formData.message} onChange={e => {
+                            <Form.Control type="text" placeholder="Greet your new chat members!" defaultValue={formData.message} onChange={e => {
                                 setFormData({
                                     ...formData, 
                                     message: e.target.value
@@ -92,7 +135,7 @@ const CreateChat = ({show, handleClose, getUsers, users}) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={onClose}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={makeChat}>
@@ -108,11 +151,14 @@ CreateChat.propTypes = {
     show: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     getUsers: PropTypes.func.isRequired,
-    users: PropTypes.array.isRequired
+    users: PropTypes.array.isRequired,
+    user: PropTypes.object.isRequired,
+    setAlert: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-    users: state.users.users
+    users: state.users.users,
+    user: state.auth.user
 }); 
 
-export default connect(mapStateToProps, {getUsers})(CreateChat); 
+export default connect(mapStateToProps, {getUsers, createChat, setAlert})(CreateChat); 

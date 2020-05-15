@@ -21,7 +21,7 @@ const ChatItem = ({user, chat}) => {
     }
     
     return (
-        <Jumbotron className="flex pv2 pl3 p-hover">
+        <Jumbotron className="flex pv2 mb1 pl3 p-hover">
             <div className="flex w-20 mr3">
                 <div className="cn">
                     {
@@ -44,7 +44,7 @@ const ChatItem = ({user, chat}) => {
                     }
                 </div>
             </div>
-            <p className="my-auto v-mid">
+            <p className="my-auto v-mid f6">
                 {label}
             </p>
         </Jumbotron>
