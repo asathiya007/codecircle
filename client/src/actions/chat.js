@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
     GET_CHATS,
     CHAT_ERROR,
-    CREATE_CHAT
+    CREATE_CHAT, 
+    LEAVE_CHAT
 } from './types';
 
 export const getChats = () => async dispatch => {
@@ -45,6 +46,25 @@ export const createChat = (formData) => async dispatch => {
             type: CHAT_ERROR,
             payload: {
                 msg: 'Error in creating new chat'
+            }
+        }); 
+    }
+}
+
+export const leaveChat = (id) => async dispatch => {
+    try {
+        // delete the chat 
+        const res = await axios.delete(`/api/chats/${id}`);
+
+        dispatch({
+            type: LEAVE_CHAT, 
+            payload: res.data
+        }); 
+    } catch (error) {
+        dispatch({
+            type: CHAT_ERROR, 
+            payload: {
+                msg: 'Error in leaving chat'
             }
         }); 
     }

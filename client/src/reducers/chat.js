@@ -1,7 +1,8 @@
 import {
     GET_CHATS, 
     CHAT_ERROR,
-    CREATE_CHAT
+    CREATE_CHAT,
+    LEAVE_CHAT
 } from '../actions/types';
 
 const initialState = {
@@ -38,6 +39,14 @@ export default function(state = initialState, action) {
                 };
             }
             return state;
+        case LEAVE_CHAT: 
+            return {
+                ...state,
+                chat: null, 
+                loading: false, 
+                chats: payload,
+                error: {}
+            }
         default: 
             return state; 
     }

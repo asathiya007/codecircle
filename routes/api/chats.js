@@ -91,9 +91,13 @@ router.post('/', tokenauth, async (req, res) => {
         }
 
         // find existing chats, return empty array if found
-        const currChat = await Chat.find({ users });
-        if (currChat && currChat[0]) {
-            return res.json([]);
+        const sortedUsers = users.map(user => user._id).sort();
+        const currChats = await Chat.find();
+        for (const chat of currChats) {
+            const chatUsers = chat.users.map(user => user._id).sort(); 
+            if (JSON.stringify(sortedUsers) === JSON.stringify(chatUsers)) {
+                return res.json([]);
+            }
         }
 
         const newChat = new Chat({

@@ -13,7 +13,7 @@ const ChatsList = ({chats, user}) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    return (
+    return chats && (
         <div className="w-30">
             <div className="flex justify-between">
                 <div className="flex">
