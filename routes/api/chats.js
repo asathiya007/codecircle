@@ -71,7 +71,7 @@ router.get('/:id', tokenauth, async (req, res) => {
 router.post('/', tokenauth, async (req, res) => {
     try {
         // check if users list is valid 
-        const { admin, users } = req.body;
+        const { user, users, text } = req.body;
         if (!users || users.length < 1) {
             return res.status(400).json({
                 errors: [
@@ -80,23 +80,42 @@ router.post('/', tokenauth, async (req, res) => {
                     }
                 ]
             });
+        } else if (!text || text === '') {
+            return res.status(400).json({
+              errors: [
+                {
+                  msg: "Please provide a greeting for this chat",
+                },
+              ],
+            });
         }
 
-        // find existing chats 
-        const currChat = await Chat.find({ users });
-        if (currChat && currChat[0]) {
-            return res.json(currChat[0]);
+        // find existing chats, return empty array if found
+        const sortedUsers = users.map(user => user._id).sort();
+        const currChats = await Chat.find();
+        for (const chat of currChats) {
+            const chatUsers = chat.users.map(user => user._id).sort(); 
+            if (JSON.stringify(sortedUsers) === JSON.stringify(chatUsers)) {
+                return res.json([]);
+            }
         }
 
         const newChat = new Chat({
             admin: [
-                admin
+                user._id
             ],
             users, 
-            messages: []
+            messages: [
+                {
+                    user: user._id,
+                    name: user.name, 
+                    avatar: user.avatar, 
+                    text
+                } 
+            ]
         }); 
         await newChat.save(); 
-        res.json(newChat);
+        res.json([newChat]);
     } catch (error) {
         console.error(error.message);
         res.status(500).json({
@@ -126,12 +145,12 @@ router.delete('/:id', tokenauth, async (req, res) => {
         const filteredUsers = 
             chat.users.filter(user => String(user._id) !== req.user.id);  
         const filteredAdmin = chat.admin.filter(
-          (admin) => String(admin._id) !== req.user.id
+          (admin) => String(admin) !== req.user.id
         );
         chat.users = filteredUsers;
         chat.admin = filteredAdmin; 
         await chat.save();
-        
+
         // if the chat has one/zero users or no admin, delete chat
         if (chat.users.length <= 1 || chat.admin.length === 0) {
             await chat.remove(); 

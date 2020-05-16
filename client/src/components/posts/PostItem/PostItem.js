@@ -168,7 +168,7 @@ const PostItem = (
                                         e.preventDefault(); 
                                         history.push(`/world/${post._id}`)
                                     }} variant="primary" className="mh1 button-margins" id={'commentButton' + post._id}>
-                                        <i className="fas fa-comments fa-2x"></i>
+                                        <i className="fas fa-comment fa-2x"></i>
                                         {
                                             post.comments.length > 0 && (
                                                 <span>{' ' + post.comments.length}</span>
