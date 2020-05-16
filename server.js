@@ -6,8 +6,8 @@ const File = require('./models/File');
 const fileUpload = require('express-fileupload');
 const path = require('path'); 
 const app = express(); 
-const http = require('http').createServer(app); 
-const io = require('socket.io')(http);
+// const http = require('http').createServer(app); 
+// const io = require('socket.io')(http);
 
 app.use(express.json());
 app.use(cors());
@@ -33,14 +33,14 @@ app.post('/uploads', tokenauth, async(req, res) => {
 }); 
 
 // socket.io
-require('./routes/socket/socket')(app, io); 
+// require('./routes/socket/socket')(app, io); 
 
 // other routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth')); 
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/posts', require('./routes/api/posts'));
-app.use('/api/chats', require('./routes/api/chats'));
+// app.use('/api/chats', require('./routes/api/chats'));
 
 // serve static assets
 // set static folder 
@@ -51,4 +51,4 @@ app.get('*', (req, res) => {
 }); 
 
 const PORT = process.env.PORT || 5000; 
-http.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
